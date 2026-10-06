@@ -326,7 +326,7 @@
     const data={_subject:'New CTV Proposal — '+($('f-client').value.trim()||'(no advertiser)'),_template:'table',
       Advertiser:$('f-client').value.trim(),Vertical:$('f-vertical').value,Headline:$('f-headline').value.trim(),
       AgencyCompany:$('f-coname').value.trim(),AgencyName:$('f-name').value.trim(),AgencyPhone:$('f-phone').value.trim(),
-      AgencyEmail:$('f-email').value.trim(),AgencyWebsite:$('f-web').value.trim(),
+      AgencyEmail:$('f-email').value.trim(),AgencyWebsite:$('f-web').value.trim(),SpecVideo:(($('f-video')||{}).value||'').trim(),
       Tier1:'$'+$('f-cpm1').value+' CPM · '+$('f-min1').value.trim(),Tier2:'$'+$('f-cpm2').value+' CPM · '+$('f-min2').value.trim(),Tier3:'$'+$('f-cpm3').value+' CPM · '+$('f-min3').value.trim()};
     try{
       const r=await fetch('https://formsubmit.co/ajax/cory@usaconnectedtv.com',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(data)});
@@ -401,6 +401,67 @@
   }
   if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', boot); }
   else { boot(); }
+})();
+</script>
+
+<script>
+/* ===== SPEC VIDEO BUTTON =====
+   Self-contained. Adds an optional "Spec Video Link" field to the builder and a
+   "Watch your commercial" button on the proposal when a link is entered.
+   Delete this whole <script> block to remove the feature. */
+(function(){
+  function cleanUrl(u){
+    u=(u||'').trim();
+    if(!u) return '';
+    if(!/^https?:\/\//i.test(u)) u='https://'+u;
+    return u;
+  }
+  function boot(){
+    var clientInput=document.getElementById('f-client');
+    var sheet=document.getElementById('sheet');
+    if(!clientInput||!sheet||document.getElementById('f-video')) return;
+
+    // 1) Builder field, right under Advertiser Name
+    var cell=clientInput.closest?clientInput.closest('.field'):clientInput.parentNode;
+    var box=document.createElement('div');
+    box.className='field full';
+    box.innerHTML='<label for="f-video">Spec Video Link <span style="font-weight:600;text-transform:none;letter-spacing:0;color:var(--amz-muted)">(optional — paste the claude.ai watch-page link)</span></label>'
+      +'<input id="f-video" type="text" value="" placeholder="https://claude.ai/... — leave blank for no video button">';
+    cell.parentNode.insertBefore(box,cell.nextSibling);
+
+    // 2) Button on the proposal sheet
+    var cta=document.createElement('a');
+    cta.id='videoCta';
+    cta.target='_blank';
+    cta.rel='noopener';
+    cta.style.cssText='display:none;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:10px 18px;border:2px solid #FF9900;border-radius:10px;background:#FF9900;color:#0A1E3F;text-decoration:none;font-weight:800;font-size:15px;';
+
+    function place(){
+      if(cta.parentNode) return;
+      var samp=document.getElementById('sampCta');
+      var anchor=document.getElementById('s-headline')||document.getElementById('s-client');
+      if(samp&&samp.parentNode){samp.parentNode.insertBefore(cta,samp);}
+      else if(anchor&&anchor.parentNode){anchor.parentNode.insertBefore(cta,anchor.nextSibling);}
+      else{sheet.insertBefore(cta,sheet.firstChild);}
+    }
+
+    function update(){
+      var url=cleanUrl(document.getElementById('f-video').value);
+      var client=(clientInput.value||'').trim();
+      if(!url){cta.style.display='none';cta.removeAttribute('href');return;}
+      cta.href=url;
+      cta.innerHTML='<span>&#9654; Watch your commercial'+(client?' &mdash; made for '+client.replace(/[<>&]/g,'')+'</span>':'</span>')
+        +'<span style="background:#0A1E3F;color:#fff;border-radius:6px;padding:4px 10px;font-size:12px;letter-spacing:1px;white-space:nowrap">CLICK TO PLAY</span>';
+      cta.style.display='flex';
+    }
+
+    document.getElementById('f-video').addEventListener('input',update);
+    clientInput.addEventListener('input',update);
+    // Wait until the sample-dashboard button is placed so the video button sits just above it
+    setTimeout(function(){place();update();},600);
+  }
+  if(document.readyState==='complete'){boot();}
+  else{window.addEventListener('load',boot);}
 })();
 </script>
 </body>
