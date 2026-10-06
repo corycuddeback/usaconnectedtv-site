@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTV Proposal Builder</title>
+<style>
+  :root{--amz-orange:#FF9900;--amz-orange-dark:#E47911;--amz-navy:#232F3E;--amz-muted:#565959;--amz-line:#DDDDDD;--paper:#FFFFFF;--wash:#FFFAF0;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:#d9d9d9;}
+  body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--amz-navy);-webkit-print-color-adjust:exact;print-color-adjust:exact;display:flex;flex-direction:column;align-items:center;padding:24px 12px;}
+
+  .panel{width:816px;max-width:100%;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(35,47,62,.16);border:1px solid var(--amz-line);padding:20px 22px;margin-bottom:24px;}
+  .panel h2{font-size:17px;font-weight:800;color:var(--amz-navy);}
+  .panel h2 .o{color:var(--amz-orange);}
+  .steps{background:var(--wash);border:1px solid #F0D9A8;border-radius:8px;padding:12px 16px;margin:10px 0 16px;font-size:12.5px;line-height:1.6;}
+  .steps b{color:var(--amz-orange-dark);}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field.full{grid-column:1 / -1;}
+  .field label{font-size:10.5px;font-weight:800;letter-spacing:1px;color:var(--amz-navy);text-transform:uppercase;}
+  .field input,.field select{font-family:inherit;font-size:13px;color:var(--amz-navy);border:1px solid var(--amz-line);border-radius:6px;padding:9px 11px;background:#fff;}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--amz-orange);box-shadow:0 0 0 3px rgba(255,153,0,.18);}
+  .field .hint{font-size:10px;color:var(--amz-muted);}
+  .field.vertical select{font-weight:800;font-size:14px;border:2px solid var(--amz-orange);background:var(--wash);}
+  .tiers-edit{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+  .te{display:flex;flex-direction:column;gap:6px;border:1px solid var(--amz-line);border-radius:8px;padding:10px;background:var(--wash);}
+  .te .te-h{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--amz-muted);}
+  .te .row2{display:flex;align-items:center;gap:6px;}
+  .te .row2 .pre{font-weight:800;font-size:15px;color:var(--amz-navy);}
+  .te input{font-family:inherit;font-size:13px;color:var(--amz-navy);border:1px solid var(--amz-line);border-radius:6px;padding:8px 9px;background:#fff;width:100%;}
+  .te input:focus{outline:none;border-color:var(--amz-orange);box-shadow:0 0 0 3px rgba(255,153,0,.18);}
+  .te input.cpmin{width:72px;font-weight:800;}
+  @media (max-width:600px){.tiers-edit{grid-template-columns:1fr;}}
+  .panel-actions{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap;}
+  .btn{font-family:inherit;font-weight:800;font-size:13px;letter-spacing:.5px;text-transform:uppercase;border:none;cursor:pointer;border-radius:6px;padding:12px 20px;transition:transform .12s,background .12s;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn.png{background:var(--amz-navy);color:#fff;}
+  .btn.pdf{background:var(--amz-orange);color:#fff;}.btn.pdf:hover{background:var(--amz-orange-dark);}
+  .btn.send{background:#1668ec;color:#fff;}.btn.send:hover{background:#0e4fd0;}
+  .btn.ghost{background:#fff;color:var(--amz-navy);border:1.5px solid var(--amz-line);}
+  .btn:disabled{opacity:.6;cursor:wait;}
+
+  .sheet{width:816px;min-height:1056px;background:var(--paper);position:relative;box-shadow:0 18px 50px rgba(35,47,62,.22);display:flex;flex-direction:column;overflow:hidden;}
+  .topbar{height:8px;width:100%;background:linear-gradient(90deg,var(--amz-navy) 0 120px,var(--amz-orange) 120px 100%);}
+  header{display:flex;align-items:center;justify-content:space-between;padding:14px 40px 12px;border-bottom:1px solid #EAEDED;gap:16px;}
+  .logo-slot{display:flex;align-items:center;justify-content:center;min-width:170px;min-height:54px;}
+  .logo-slot img{max-height:60px;max-width:230px;display:block;}
+  .logo-slot .ph{border:2px dashed var(--amz-line);border-radius:8px;color:var(--amz-muted);font-weight:800;font-size:13px;letter-spacing:1px;padding:16px 18px;}
+  .amz-mark{display:flex;flex-direction:column;align-items:flex-end;gap:1px;}
+  .amz-mark .powered-by{font-size:8.5px;letter-spacing:2.4px;text-transform:uppercase;color:var(--amz-muted);font-weight:700;}
+  .amz-mark .amz-svg{width:108px;height:auto;display:block;}
+  .amz-mark .ads-label{font-size:15px;font-weight:800;color:var(--amz-orange);letter-spacing:.5px;line-height:1;margin-top:-2px;}
+
+  .hero{padding:14px 44px 4px;}
+  .eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--amz-orange-dark);margin-bottom:9px;}
+  .client{font-weight:800;font-size:32px;color:var(--amz-navy);letter-spacing:-.7px;line-height:1.05;margin-bottom:10px;}
+  .hook{font-weight:900;font-size:36px;letter-spacing:-.9px;line-height:1;color:var(--amz-navy);margin-bottom:4px;}
+  .hook .o{color:var(--amz-orange);}
+  .subhook{font-weight:800;font-size:19px;color:var(--amz-muted);letter-spacing:-.2px;margin-bottom:12px;}
+  .headline{font-size:15.5px;line-height:1.4;color:var(--amz-navy);max-width:690px;font-weight:500;}.headline b{color:var(--amz-orange-dark);font-weight:800;}
+
+  /* TIER RATE CARD */
+  .tiers-wrap{padding:12px 44px 2px;}
+  .tiers-head{text-align:center;font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--amz-muted);margin-bottom:16px;}
+  .tiers-head b{color:var(--amz-navy);}
+  .tiers{display:flex;gap:12px;align-items:stretch;}
+  .tier{flex:1;background:var(--amz-navy);color:#fff;border-radius:12px;padding:20px 12px 16px;text-align:center;position:relative;box-shadow:0 6px 18px rgba(35,47,62,.16);}
+  .tier .cpm{font-size:40px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1;}
+  .tier .cpm .d{font-size:24px;vertical-align:top;font-weight:800;}
+  .tier .cpm-l{font-size:9.5px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#B6BCC4;margin-top:5px;}
+  .tier .tier-min{font-size:12px;font-weight:700;color:rgba(255,255,255,.88);margin-top:11px;border-top:1px solid rgba(255,255,255,.15);padding-top:10px;}
+  .tier.best{background:var(--amz-orange);color:var(--amz-navy);box-shadow:0 8px 22px rgba(228,121,17,.4);}
+  .tier.best .cpm{color:#fff;}
+  .tier.best .cpm-l{color:rgba(35,47,62,.82);}
+  .tier.best .tier-min{color:var(--amz-navy);border-top-color:rgba(35,47,62,.25);}
+  .tier .badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--amz-navy);color:#fff;font-size:8.5px;font-weight:800;letter-spacing:1.5px;padding:4px 11px;border-radius:20px;white-space:nowrap;}
+  .tiers-sub{text-align:center;font-size:12px;font-weight:600;color:var(--amz-muted);margin-top:14px;}
+  .tiers-sub b{color:var(--amz-orange-dark);}
+
+  /* WHERE YOUR AD RUNS box */
+  .runs-wrap{padding:10px 44px 2px;}
+  .runs{background:var(--amz-navy);border-radius:12px;padding:18px 22px;text-align:center;box-shadow:0 8px 22px rgba(35,47,62,.22);}
+  .runs-head{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--amz-orange);margin-bottom:13px;}
+  .runs-logos{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 10px;}
+  .runs-sub{font-size:12px;color:rgba(255,255,255,.82);font-weight:600;margin-top:13px;}
+  .runs-sub b{color:#fff;}
+
+  .why-wrap{padding:14px 44px 4px;}
+  .section-tag{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--amz-muted);margin-bottom:14px;padding-bottom:7px;border-bottom:1px solid var(--amz-line);}
+  .why{display:grid;grid-template-columns:1fr 1fr;gap:13px 26px;}
+  .why li{list-style:none;display:flex;gap:11px;font-size:13px;line-height:1.4;}.why li b{color:var(--amz-navy);font-weight:800;}
+  .tick{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--amz-orange);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+
+  .logo{display:inline-flex;align-items:center;justify-content:center;height:28px;padding:0 13px;border-radius:4px;font-weight:800;font-size:13px;letter-spacing:-.3px;white-space:nowrap;}
+  .logo.prime{background:#00A8E1;color:#fff;}.logo.prime::before{content:"▶ ";font-size:8px;margin-right:2px;}
+  .logo.roku{background:#6E3AAB;color:#fff;letter-spacing:.5px;}.logo.hulu{background:#1CE783;color:#040405;font-weight:900;}
+  .logo.espn{background:#C8102E;color:#fff;font-style:italic;font-weight:900;letter-spacing:0;}
+  .logo.disc{background:#0099CC;color:#fff;}.logo.disc sup{font-size:9px;}.logo.para{background:#0064FF;color:#fff;}.logo.para sup{font-size:9px;}
+  .logo.fox{background:#000;color:#fff}
+.logo.samsung{background:#1428A0;color:#fff}
+
+  .included{padding:12px 44px 0;}
+  .inc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:2px;}
+  .inc{border-top:2px solid var(--amz-orange);padding-top:9px;}.inc h4{font-weight:800;font-size:12.5px;color:var(--amz-navy);margin-bottom:4px;}.inc p{font-size:11px;line-height:1.35;color:var(--amz-muted);}
+
+  .bonus-wrap{padding:10px 44px 4px;}
+  .bonus{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 14px;border:1.5px dashed var(--amz-orange);border-radius:8px;background:var(--wash);}
+  .bonus .plus{background:var(--amz-orange);color:#fff;font-weight:900;font-size:14px;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;line-height:1;}
+  .bonus .text{font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--amz-navy);}.bonus .text .accent{color:var(--amz-orange-dark);}
+
+  footer{background:var(--amz-navy);color:#fff;padding:14px 44px;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:auto;}
+  .foot-l .fh{font-weight:800;font-size:16px;letter-spacing:-.2px;}.foot-l .fh .o{color:var(--amz-orange);}
+  .foot-l .fs{font-size:12px;color:rgba(255,255,255,.72);margin-top:4px;}
+  .foot-r{text-align:right;line-height:1.55;}
+  .foot-r .nm{font-weight:800;font-size:14px;}.foot-r .ti{font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,.7);margin:2px 0 5px;}
+  .foot-r .ct{font-size:12px;color:rgba(255,255,255,.85);font-weight:600;}.foot-r .ct.o{color:var(--amz-orange);}
+
+  @media screen and (max-width:840px){ .sheet{zoom:.62;} body{padding:14px 6px;} }
+  @media screen and (max-width:600px){ .panel .grid{grid-template-columns:1fr;} }
+  @media screen and (max-width:560px){ .sheet{zoom:.46;} }
+  @media screen and (max-width:400px){ .sheet{zoom:.40;} }
+  @media print{body{padding:0;background:#fff;}.panel{display:none!important;}.sheet{box-shadow:none;width:816px;min-height:0;zoom:.85;}}
+  @page{size:letter;margin:.3in;}
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <h2>CTV Proposal <span class="o">Builder</span></h2>
+  <div class="steps">
+    <b>1.</b> Pick the vertical &amp; upload your logo.&nbsp; <b>2.</b> Fill in the advertiser &amp; your contact info.<br>
+    <b>3.</b> Adjust the three pricing tiers if needed.&nbsp; <b>4.</b> <b>Save as PNG</b> (for email) or <b>Save / Print PDF</b> (to attach/print) — and please hit <b>Send a Copy to USA Connected TV</b> so we have it on file before you present.
+  </div>
+
+  <div class="grid">
+    <div class="field vertical">
+      <label for="f-vertical">Vertical</label>
+      <input id="f-vertical" type="text" value="" placeholder="Insert industry (e.g. HVAC, Dentist, Realtor)">
+    </div>
+    <div class="field">
+      <label for="f-logo">Your Logo (upload)</label>
+      <input id="f-logo" type="file" accept="image/*">
+      <span class="hint">PNG with transparent background looks best.</span>
+    </div>
+    <div class="field full">
+      <label for="f-client">Advertiser Name</label>
+      <input id="f-client" type="text" value="" placeholder="e.g. Mountain Air HVAC">
+    </div>
+    <div class="field full">
+      <label for="f-headline">Headline / Supporting Line</label>
+      <input id="f-headline" type="text" value="" placeholder="Loads from the vertical — edit freely. Wrap a phrase in *asterisks* for orange.">
+    </div>
+    <div class="field full">
+      <label>Pricing Tiers — net CPM &amp; monthly minimum <span style="font-weight:600;text-transform:none;letter-spacing:0;color:var(--amz-muted)">(lowest CPM auto-highlights as Best Rate)</span></label>
+      <div class="tiers-edit">
+        <div class="te"><span class="te-h">Tier 1</span><div class="row2"><span class="pre">$</span><input id="f-cpm1" class="cpmin" type="number" min="0" value="21"><span style="font-size:10px;color:var(--amz-muted);font-weight:700;">CPM</span></div><input id="f-min1" type="text" value="$5K / mo minimum"></div>
+        <div class="te"><span class="te-h">Tier 2</span><div class="row2"><span class="pre">$</span><input id="f-cpm2" class="cpmin" type="number" min="0" value="19"><span style="font-size:10px;color:var(--amz-muted);font-weight:700;">CPM</span></div><input id="f-min2" type="text" value="$11K / mo minimum"></div>
+        <div class="te"><span class="te-h">Tier 3</span><div class="row2"><span class="pre">$</span><input id="f-cpm3" class="cpmin" type="number" min="0" value="17"><span style="font-size:10px;color:var(--amz-muted);font-weight:700;">CPM</span></div><input id="f-min3" type="text" value="$20K / mo minimum"></div>
+      </div>
+    </div>
+    <div class="field"><label for="f-coname">Your Company</label><input id="f-coname" type="text" value="" placeholder="Your Agency"></div>
+    <div class="field"><label for="f-name">Your Name</label><input id="f-name" type="text" value="" placeholder="Your Name"></div>
+    <div class="field"><label for="f-phone">Phone</label><input id="f-phone" type="text" value="" placeholder="000-000-0000"></div>
+    <div class="field"><label for="f-email">Email</label><input id="f-email" type="text" value="" placeholder="you@youragency.com"></div>
+    <div class="field full"><label for="f-web">Website</label><input id="f-web" type="text" value="" placeholder="youragency.com"></div>
+  </div>
+
+  <div class="panel-actions">
+    <button class="btn png" id="pngBtn" onclick="saveAsPNG()">📷 Save as PNG (email)</button>
+    <button class="btn pdf" onclick="window.print()">🖨 Save / Print PDF</button>
+    <button class="btn send" id="sendBtn" onclick="sendCopy()">📩 Send a Copy to USA Connected TV</button>
+    <button class="btn ghost" onclick="loadVertical()">Reset this vertical</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet">
+  <div class="topbar"></div>
+  <header>
+     <div class="logo-slot"><img id="s-logo-img" alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="display:none;"><span class="ph" id="s-logo-ph">YOUR&nbsp;LOGO&nbsp;HERE</span></div>
+    <div class="amz-mark">
+      <span class="powered-by">Powered by</span>
+      <svg class="amz-svg" viewBox="0 0 380 130" xmlns="http://www.w3.org/2000/svg" aria-label="amazon ads">
+        <text x="20" y="78" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="78" font-weight="700" fill="#221F1F" letter-spacing="-2">amazon</text>
+        <path d="M 38 96 C 95 130, 220 130, 295 100" stroke="#FF9900" stroke-width="7" fill="none" stroke-linecap="round"></path>
+        <path d="M 287 90 L 310 100 L 290 116 Z" fill="#FF9900"></path>
+      </svg>
+      <span class="ads-label">ads</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Connected TV Proposal · Prepared For</div>
+    <h1 class="client" id="s-client">Your Advertiser</h1>
+    <div class="hook" id="s-hook"></div>
+    <div class="subhook" id="s-subhook"></div>
+    <p class="headline" id="s-headline"></p>
+  </section>
+
+  <div class="tiers-wrap">
+    <div class="tiers-head"><b>Volume Pricing</b> — net CPM, steps down as you scale</div>
+    <div class="tiers">
+      <div class="tier" id="tier1"><div class="badge" id="badge1" style="display:none">BEST RATE</div><div class="cpm"><span class="d">$</span><span id="s-cpm1">21</span></div><div class="cpm-l">net CPM</div><div class="tier-min" id="s-min1">$5K / mo minimum</div></div>
+      <div class="tier" id="tier2"><div class="badge" id="badge2" style="display:none">BEST RATE</div><div class="cpm"><span class="d">$</span><span id="s-cpm2">19</span></div><div class="cpm-l">net CPM</div><div class="tier-min" id="s-min2">$11K / mo minimum</div></div>
+      <div class="tier" id="tier3"><div class="badge" id="badge3" style="display:none">BEST RATE</div><div class="cpm"><span class="d">$</span><span id="s-cpm3">17</span></div><div class="cpm-l">net CPM</div><div class="tier-min" id="s-min3">$20K / mo minimum</div></div>
+    </div>
+    <div class="tiers-sub">Net rates — <b>you set your own client pricing.</b> Non-skippable :30 ads. You only pay for completed views.</div>
+  </div>
+
+  <div class="runs-wrap">
+    <div class="runs">
+      <div class="runs-head">Where Your Ad Runs</div>
+      <div class="runs-logos">
+        <span class="logo prime">prime video</span><span class="logo roku">Roku</span><span class="logo hulu">hulu</span>
+        <span class="logo espn">ESPN</span><span class="logo disc">discovery<sup>+</sup></span><span class="logo para">Paramount<sup>+</sup></span><span class="logo fox">FOX</span><span class="logo samsung">Samsung TV</span>
+      </div>
+      <div class="runs-sub">+ premium networks &amp; <b>live sports</b> — the apps your customers already watch every night.</div>
+    </div>
+  </div>
+
+  <div class="why-wrap">
+    <div class="section-tag">Why Connected TV — and why now</div>
+    <ul class="why" id="s-why"></ul>
+  </div>
+
+  <div class="included">
+    <div class="section-tag">What's included</div>
+    <div class="inc-grid">
+      <div class="inc"><h4>The Spot</h4><p>A broadcast-quality :30 commercial — ready for air.</p></div>
+      <div class="inc"><h4>The Placement</h4><p>Non-skippable impressions across premium CTV apps.</p></div>
+      <div class="inc"><h4>The Targeting</h4><p id="s-targeting">Geo &amp; audience targeting dialed to the local market.</p></div>
+      <div class="inc"><h4>The Tracking</h4><p>Amazon-verified completed views — real households, no bots, no guesswork.</p></div>
+    </div>
+  </div>
+
+  <div class="bonus-wrap">
+    <div class="bonus"><span class="plus">+</span><span class="text"><span class="accent">Pro Video Production</span> available — whenever you'd like a hand</span></div>
+  </div>
+
+  <footer>
+    <div class="foot-l">
+      <div class="fh">Approve, and you're <span class="o">on-air in days</span> — not months.</div>
+      <div class="fs" id="s-foottag">No long-term contract. Just your ad, on premium TV.</div>
+    </div>
+    <div class="foot-r">
+      <div class="nm" id="s-name">Your Name</div>
+      <div class="ti" id="s-co">Your Company</div>
+      <div class="ct o" id="s-phone">000-000-0000</div>
+      <div class="ct" id="s-email">you@youragency.com</div>
+      <div class="ct" id="s-web">youragency.com</div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script>
+  const $=id=>document.getElementById(id);
+  const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const fmt=t=>esc(t).replace(/\*([^*]+)\*/g,'<b>$1</b>');
+
+  const V={
+    realtor:{hook:'Own Your <span class="o">FARM.</span>',subhook:'Reach Buyers & Sellers.',headline:'Your face on the *biggest screen in the house* — non-skippable :30 commercials in the streaming apps your neighborhood watches every night.',
+      bullets:[['100% non-skippable.','Your full :30 plays start-to-finish on the TV screen — no "skip in 5," no scrolling past you.'],['Own your farm.','We serve only to the ZIP codes &amp; neighborhoods you list in — every dollar reaches your market, none wasted.'],['Be the name they trust.','Your face runs alongside the networks people watch every night — the credibility of big-budget TV at a local budget.'],['Stay top-of-mind.','The same neighbors see you again and again — the name recognition that turns into listings and referrals.']],
+      targeting:'Geo &amp; audience targeting dialed to your farm area.',foottag:'No long-term contract. Just your face, on premium TV.'},
+    legal:{hook:'',subhook:'',headline:'Put your firm on the *biggest screen in the house* — full-screen, non-skippable :30 commercials inside the premium streaming apps your future clients already watch every night.',
+      bullets:[['100% non-skippable.','Your full :30 plays start-to-finish on the TV screen — no "skip in 5," no scrolling past it.'],['Premium apps, premium credibility.','You appear alongside the networks people trust — the halo of big-budget TV at a local budget.'],['Pinpoint local targeting.','We serve only to the ZIP codes and audiences that matter to your practice — no wasted impressions.'],['Stay top-of-mind.','The same prospects see you again and again — the name recognition that wins the call when they need a firm.']],
+      targeting:'Geo &amp; audience targeting dialed to your local market.',foottag:'No long-term contract. Just your ad, on premium TV.'},
+    generic:{hook:'',subhook:'',headline:'Put your business on the *biggest screen in the house* — non-skippable :30 commercials inside the premium streaming apps your customers watch every night.',
+      bullets:[['100% non-skippable.','Your full :30 plays start-to-finish on the TV screen — no "skip in 5," no scrolling past it.'],['Premium apps, premium credibility.','You appear alongside the networks people trust — big-budget TV at a local budget.'],['Pinpoint local targeting.','We serve only to the ZIP codes and audiences that matter to you — no wasted impressions.'],['Stay top-of-mind.','The same customers see you again and again — building real name recognition in your market.']],
+      targeting:'Geo &amp; audience targeting dialed to your local market.',foottag:'No long-term contract. Just your ad, on premium TV.'}
+  };
+
+  // Vertical is a free-text field, so an unrecognized entry falls back to the generic copy set.
+  const getV=()=>V[($('f-vertical').value||'').trim().toLowerCase()]||V.generic;
+
+  function loadVertical(){
+    const v=getV();
+    const cur=$('f-headline').value.trim();
+    // Only swap in the template headline if the box is empty or still holds an untouched template.
+    if(!cur||Object.keys(V).some(k=>V[k].headline===cur))$('f-headline').value=v.headline;
+    render();
+  }
+
+  function render(){
+    const v=getV();
+    const client=$('f-client').value.trim()||'Your Advertiser';
+    $('s-client').textContent=client;
+    if(v.hook){$('s-hook').style.display='';$('s-subhook').style.display='';$('s-hook').innerHTML=v.hook;$('s-subhook').textContent=v.subhook;}else{$('s-hook').style.display='none';$('s-subhook').style.display='none';}
+    $('s-headline').innerHTML=fmt($('f-headline').value.trim()||v.headline);
+    $('s-targeting').innerHTML=v.targeting;$('s-foottag').textContent=v.foottag;
+    $('s-why').innerHTML=v.bullets.map(b=>'<li><div class="tick">✓</div><div><b>'+b[0]+'</b> '+b[1]+'</div></li>').join('');
+    $('s-name').textContent=$('f-name').value.trim()||'Your Name';
+    $('s-co').textContent=$('f-coname').value.trim()||'Your Company';
+    $('s-phone').textContent=$('f-phone').value.trim()||'000-000-0000';
+    $('s-email').textContent=$('f-email').value.trim()||'you@youragency.com';
+    $('s-web').textContent=$('f-web').value.trim()||'youragency.com';
+    renderTiers();
+  }
+
+  function renderTiers(){
+    const cpms=[1,2,3].map(i=>parseFloat($('f-cpm'+i).value));
+    [1,2,3].forEach(i=>{
+      $('s-cpm'+i).textContent=(isNaN(cpms[i-1])?'':$('f-cpm'+i).value);
+      $('s-min'+i).textContent=$('f-min'+i).value.trim();
+    });
+    let bestIdx=-1,bestVal=Infinity;
+    cpms.forEach((c,i)=>{if(!isNaN(c)&&c>0&&c<bestVal){bestVal=c;bestIdx=i;}});
+    [1,2,3].forEach(i=>{const best=(i-1===bestIdx);$('tier'+i).classList.toggle('best',best);$('badge'+i).style.display=best?'':'none';});
+  }
+
+  $('f-logo').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const img=$('s-logo-img');img.src=ev.target.result;img.style.display='block';$('s-logo-ph').style.display='none';};r.readAsDataURL(f);});
+  $('f-vertical').addEventListener('change',loadVertical);
+  ['f-client','f-headline','f-coname','f-name','f-phone','f-email','f-web','f-cpm1','f-min1','f-cpm2','f-min2','f-cpm3','f-min3'].forEach(id=>$(id).addEventListener('input',render));
+
+  async function saveAsPNG(){const btn=$('pngBtn'),orig=btn.textContent;btn.disabled=true;btn.textContent='Rendering…';
+    const sheet=$('sheet');const pz=sheet.style.zoom;sheet.style.zoom='1';
+    try{if(typeof htmlToImage==='undefined')throw new Error('Image tool did not load — try Print to PDF instead, or refresh.');
+      const url=await htmlToImage.toPng(sheet,{backgroundColor:'#FFFFFF',pixelRatio:2,cacheBust:true});
+      const name=($('f-client').value.trim()||'proposal').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const a=document.createElement('a');a.href=url;a.download='ctv-proposal-'+name+'.png';document.body.appendChild(a);a.click();document.body.removeChild(a);
+      sheet.style.zoom=pz;btn.disabled=false;btn.textContent='✓ Saved';setTimeout(()=>btn.textContent=orig,2200);
+    }catch(e){sheet.style.zoom=pz;btn.disabled=false;btn.textContent=orig;alert("Couldn't save: "+e.message);}}
+
+  async function sendCopy(){
+    const btn=$('sendBtn'),orig=btn.textContent;btn.disabled=true;btn.textContent='Sending…';
+    const data={_subject:'New CTV Proposal — '+($('f-client').value.trim()||'(no advertiser)'),_template:'table',
+      Advertiser:$('f-client').value.trim(),Vertical:$('f-vertical').value,Headline:$('f-headline').value.trim(),
+      AgencyCompany:$('f-coname').value.trim(),AgencyName:$('f-name').value.trim(),AgencyPhone:$('f-phone').value.trim(),
+      AgencyEmail:$('f-email').value.trim(),AgencyWebsite:$('f-web').value.trim(),
+      Tier1:'$'+$('f-cpm1').value+' CPM · '+$('f-min1').value.trim(),Tier2:'$'+$('f-cpm2').value+' CPM · '+$('f-min2').value.trim(),Tier3:'$'+$('f-cpm3').value+' CPM · '+$('f-min3').value.trim()};
+    try{
+      const r=await fetch('https://formsubmit.co/ajax/cory@usaconnectedtv.com',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(data)});
+      if(!r.ok)throw new Error('network');
+      btn.textContent='✓ Sent to USA Connected TV';setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},3000);
+    }catch(e){btn.disabled=false;btn.textContent=orig;alert("Couldn't send — check your connection and try again.");}
+  }
+
+  loadVertical();
+</script>
+
+<script>window.addEventListener("load",function(){setTimeout(function(){try{var sheet=document.getElementById("sheet");if(!sheet||document.getElementById("sampCta"))return;var anchor=document.getElementById("s-headline")||document.getElementById("s-client");var cta=document.createElement("a");cta.id="sampCta";cta.href="https://usaconnectedtv.com/sample-dashboard.html";cta.target="_blank";cta.rel="noopener";cta.style.cssText="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:8px 18px;border:2px solid #1D6FE0;border-radius:10px;background:#EAF2FE;color:#0A1E3F;text-decoration:none;font-weight:700;font-size:14px;";cta.innerHTML="<span>▶ See a live sample dashboard</span><span style=\"color:#1D6FE0;font-weight:800\">usaconnectedtv.com/sample-dashboard.html</span>";if(anchor&&anchor.parentNode){anchor.parentNode.insertBefore(cta,anchor.nextSibling);}else{sheet.insertBefore(cta,sheet.firstChild);}}catch(e){}},350);});</script>
+
+<script>
+/* ===== POWERED BY SWITCH — Amazon Ads <-> Universal Ads + CBS =====
+   Self-contained. Nothing above this block is modified.
+   Delete this whole <script> block to remove the feature. */
+(function(){
+  function boot(){
+    var mark  = document.querySelector('.amz-mark');
+    var chips = document.querySelector('.runs-logos');
+    var vert  = document.getElementById('f-vertical');
+    if(!mark || !chips || !vert) return;
+
+    var track = null;
+    Array.prototype.forEach.call(document.querySelectorAll('.inc h4'), function(h){
+      if(h.textContent.trim().toLowerCase() === 'the tracking'){ track = h.nextElementSibling; }
+    });
+
+    var AMZ = { mark: mark.innerHTML, chips: chips.innerHTML, track: track ? track.innerHTML : '' };
+
+    var UNI = {
+      mark: '<span class="powered-by">Powered by</span>'
+          + '<div style="display:flex;align-items:center;gap:11px;line-height:1;margin-top:2px">'
+          +   '<div style="text-align:right">'
+          +     '<div style="font-size:17px;font-weight:800;letter-spacing:2px;color:#232F3E">UNIVERSAL</div>'
+          +     '<div style="font-size:11px;font-weight:800;letter-spacing:5px;color:#FF9900;margin-top:2px">ADS</div>'
+          +   '</div>'
+          +   '<div style="width:1px;height:30px;background:#DDDDDD"></div>'
+          +   '<div style="font-size:21px;font-weight:800;letter-spacing:2px;color:#0057B8">CBS</div>'
+          + '</div>',
+      chips: '<span class="logo roku">Roku</span>'
+           + '<span class="logo hulu">hulu</span>'
+           + '<span class="logo espn">ESPN</span>'
+           + '<span class="logo disc">discovery<sup>+</sup></span>'
+           + '<span class="logo para">Paramount<sup>+</sup></span>'
+           + '<span class="logo" style="background:#0057B8;color:#fff;letter-spacing:1.5px">CBS</span>'
+           + '<span class="logo fox">FOX</span>'
+           + '<span class="logo samsung">Samsung TV+</span>',
+      track: 'Verified completed views — real households, no bots, no guesswork.'
+    };
+
+    var cell = vert.closest ? vert.closest('.field') : vert.parentNode;
+    var box  = document.createElement('div');
+    box.className = 'field';
+    box.innerHTML =
+        '<label for="f-brand">Powered By</label>'
+      + '<select id="f-brand" style="font-weight:800;font-size:14px;border:2px solid #FF9900;background:#FFFAF0">'
+      +   '<option value="amazon">Amazon Ads</option>'
+      +   '<option value="universal">Universal Ads + CBS</option>'
+      + '</select>';
+    cell.parentNode.insertBefore(box, cell.nextSibling);
+
+    function apply(){
+      var s = document.getElementById('f-brand').value === 'universal' ? UNI : AMZ;
+      mark.innerHTML  = s.mark;
+      chips.innerHTML = s.chips;
+      if(track) track.innerHTML = s.track;
+    }
+    document.getElementById('f-brand').addEventListener('change', apply);
+    apply();
+  }
+  if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', boot); }
+  else { boot(); }
+})();
+</script>
+</body>
+</html>

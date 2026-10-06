@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USA Connected TV · Streaming TV Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* =================================================================
+   USA Connected TV — CLIENT STREAMING-TV PORTAL   (serve at usaconnectedtv.com/reports)
+   Multi-range: Last 24 Hours / Last 7 Days / Month to Date / Year to Date.
+   Edit ONLY the DATA block in the <script>. No cost / CPM / spend anywhere.
+================================================================= */
+*,::before,::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0A1E3F;--navy2:#122b52;--ink:#0d1a30;--red:#C8102E;--red2:#e23b52;
+  --blue:#1D6FE0;--blue2:#5B9BF2;--green:#15A34A;--bg:#F2F5FA;--card:#fff;--line:#E6EBF3;--muted:#6E7D96;--ink2:#31415C;}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+#gate{position:fixed;inset:0;z-index:100;background:radial-gradient(1200px 600px at 70% -10%,#12315f 0%,#0a1a36 55%,#08152c 100%);display:flex;align-items:center;justify-content:center;padding:24px}
+#gate.hide{display:none}
+.gate-card{width:100%;max-width:404px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:34px 30px;backdrop-filter:blur(6px);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.brandmk{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),var(--red2));display:flex;align-items:center;justify-content:center;color:#fff}
+.brandmk svg{width:17px;height:17px}
+.gate-logo{display:flex;align-items:center;gap:11px;margin-bottom:22px}
+.gate-logo .nm{color:#fff;font-weight:800;letter-spacing:.5px;font-size:16px}
+.gate-logo .nm span{color:var(--red2)}
+.gate-h{color:#fff;font-size:19px;font-weight:700;margin-bottom:4px}
+.gate-sub{color:#9fb2d3;font-size:12.5px;margin-bottom:22px;line-height:1.55}
+.gate-lbl{color:#8ba0c4;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;display:block}
+.gate-in{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:12px 14px;color:#fff;font-size:14px;margin-bottom:16px;outline:none;font-family:"DM Mono",monospace;letter-spacing:2px}
+.gate-in:focus{border-color:var(--red2)}
+.gate-btn{width:100%;background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border:none;border-radius:10px;padding:13px;font-weight:700;font-size:14px;cursor:pointer}
+.gate-hint{color:#7386a8;font-size:11px;margin-top:16px;text-align:center}
+.gate-hint b{color:var(--red2)}
+.gate-err{color:#ff9aa6;font-size:11.5px;margin:-8px 0 12px;min-height:14px}
+.gate-foot{color:#5b6d8e;font-size:10px;text-align:center;margin-top:20px;letter-spacing:.4px}
+#app{display:none}
+#app.show{display:block}
+.topbar{background:var(--navy);color:#fff;position:sticky;top:0;z-index:20;border-bottom:3px solid var(--red)}
+.tb-inner{max-width:1240px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;gap:16px}
+.tb-logo{display:flex;align-items:center;gap:9px}
+.tb-logo .nm{font-weight:800;font-size:14px;letter-spacing:.4px}
+.tb-logo .nm span{color:var(--red2)}
+.tb-div{width:1px;height:26px;background:rgba(255,255,255,.15)}
+.tb-camp{display:flex;flex-direction:column;line-height:1.25}
+.tb-camp .c1{font-weight:600;font-size:14px}
+.tb-camp .c2{font-size:11px;color:#9fb2d3}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+.tb-stat{text-align:right;line-height:1.2}
+.tb-stat .v{font-weight:700;font-size:13.5px}
+.tb-stat .l{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:#8ba0c4}
+.tb-live{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#c9f0d6;background:rgba(21,163,74,.16);border:1px solid rgba(21,163,74,.42);padding:4px 10px;border-radius:20px;font-weight:600}
+.tb-live .dot{width:7px;height:7px;border-radius:50%;background:#34d17f;animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,209,127,.55)}70%{box-shadow:0 0 0 7px rgba(52,209,127,0)}100%{box-shadow:0 0 0 0 rgba(52,209,127,0)}}
+.subbar{background:#fff;border-bottom:1px solid var(--line)}
+.sb-inner{max-width:1240px;margin:0 auto;padding:9px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rangesel{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;border-radius:9px;padding:2px 4px 2px 12px;font-size:12px;font-weight:600}
+.rangesel .cal{color:var(--red2)}
+.rangesel select{appearance:none;-webkit-appearance:none;background:transparent;color:#fff;border:none;font-family:"Inter";font-size:12.5px;font-weight:700;padding:7px 28px 7px 6px;outline:none;cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='white'><path d='M7 10l5 5 5-5z'/></svg>");background-repeat:no-repeat;background-position:right 8px center}
+.rangesel select option{color:#111}
+.custrange{display:inline-flex;align-items:center;gap:7px}
+.custrange .cin{font-family:"Inter";font-size:12px;font-weight:600;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff;outline:none}
+.custrange .cin:focus{border-color:var(--blue)}
+.custrange .cdash{color:var(--muted);font-weight:700}
+.custrange .capply{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:"Inter"}
+.custrange .capply:hover{background:var(--navy2)}
+.custrange .cerr{color:var(--red);font-size:11px;font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink2);background:#F1F4FA;border:1px solid var(--line);padding:5px 11px;border-radius:20px}
+.pill b{color:var(--navy)}
+.pill .ic{color:var(--blue)}
+.sb-inner .flex{margin-left:auto;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:14px}
+.sync{display:inline-flex;align-items:center;gap:6px}
+.sync b{color:var(--navy);font-family:"DM Mono",monospace}
+.clock{font-family:"DM Mono",monospace;color:var(--ink2)}
+.wrap{max-width:1240px;margin:0 auto;padding:22px 24px 60px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+.g2{grid-template-columns:2fr 1fr}
+.g2e{grid-template-columns:1fr 1fr}
+@media(max-width:1080px){.g4{grid-template-columns:repeat(2,1fr)}.g5{grid-template-columns:repeat(2,1fr)}.g2,.g2e{grid-template-columns:1fr}}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px 17px;position:relative;overflow:hidden}
+.kpi .k-l{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kpi .k-v{font-size:30px;font-weight:800;color:var(--navy);margin-top:5px;letter-spacing:-.5px;line-height:1}
+.kpi .k-s{font-size:11px;color:var(--muted);margin-top:6px}
+.kpi .k-s .up{color:var(--green);font-weight:600}
+.kpi .spark{position:absolute;right:12px;top:14px;width:66px;height:26px;opacity:.9}
+.kpi.accent .k-v{color:var(--blue)}.kpi.red .k-v{color:var(--red)}.kpi.green .k-v{color:var(--green)}.kpi.gold .k-v{color:#C8920A}
+.kpi.gold.notrack .k-v{color:var(--muted);font-size:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px 17px}
+.card h3{font-size:13px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px;margin-bottom:2px}
+.card .hint{font-size:10.5px;color:var(--muted);margin-bottom:12px}
+.card .dots{margin-left:auto;color:#c3ccdb;letter-spacing:2px;font-weight:700}
+.chead{display:flex;align-items:center;margin-bottom:10px}.chead h3{margin-bottom:0}
+.cbox{position:relative;height:220px}.cbox.sm{height:180px}
+.hbars{display:flex;flex-direction:column;gap:9px;margin-top:4px}
+.hbar{display:grid;grid-template-columns:150px 1fr 62px;align-items:center;gap:10px}
+.hbar .nm{font-size:12px;color:var(--ink2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .tr{height:9px;background:#EDF1F8;border-radius:5px;overflow:hidden}
+.hbar .fl{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));border-radius:5px;transition:width 1s ease}
+.hbar .fl.red{background:linear-gradient(90deg,var(--red),var(--red2))}
+.hbar .vl{font-size:11.5px;text-align:right;color:var(--navy);font-weight:600;font-family:"DM Mono",monospace}
+.hbar .vl small{color:var(--muted);font-weight:400}
+.hbar.tg .nm{color:var(--navy);font-weight:600}
+.tag{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:.5px;color:#fff;background:var(--green);padding:1px 5px;border-radius:3px;margin-left:6px;vertical-align:middle}
+.funnel{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.fn{background:linear-gradient(160deg,#12315f,#1c4788);border-radius:11px;padding:15px 14px;color:#fff}
+.fn:nth-child(1){background:linear-gradient(160deg,#0e2547,#173a72)}
+.fn .fl{font-size:10px;letter-spacing:.6px;text-transform:uppercase;color:#a9c4ef}
+.fn .fv{font-size:23px;font-weight:800;margin-top:6px}
+.fn .fp{font-size:11px;color:#cfe0ff;margin-top:3px}
+.fn .fbar{height:5px;background:rgba(255,255,255,.16);border-radius:3px;margin-top:10px;overflow:hidden}
+.fn .fbar i{display:block;height:100%;background:var(--red2);border-radius:3px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+.tbl th.r,.tbl td.num{text-align:right}
+.tbl td{padding:10px;border-bottom:1px solid #F1F4FA;color:var(--ink2)}
+.tbl td.num{font-family:"DM Mono",monospace;color:var(--navy)}
+.tbl tr:last-child td{border-bottom:none}
+.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:#E7F6Ed;color:var(--green)}
+.dev-legend{display:flex;flex-direction:column;gap:8px;justify-content:center}
+.dev-legend .li{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink2)}
+.dev-legend .sw{width:11px;height:11px;border-radius:3px}
+.dev-legend .pc{margin-left:auto;font-weight:600;color:var(--navy);font-family:"DM Mono",monospace}
+.note{font-size:10px;color:var(--muted);margin-top:12px;line-height:1.5;border-top:1px dashed var(--line);padding-top:10px}
+.sechead{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:26px 2px 4px}
+.footer{max-width:1240px;margin:0 auto;padding:22px 24px 40px;color:var(--muted);font-size:10.5px;line-height:1.6}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-logo"><div class="brandmk"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7z" fill="#fff"/></svg></div><div class="nm">USA <span>Connected TV</span></div></div>
+    <div class="gate-h">Client Reporting Portal</div>
+    <div class="gate-sub">Secure access to your Streaming&nbsp;TV campaign performance. Enter the access code provided by your USA&nbsp;Connected TV account team.</div>
+    <label class="gate-lbl">Access Code</label>
+    <input id="code" class="gate-in" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')signIn()">
+    <div class="gate-err" id="err"></div>
+    <button class="gate-btn" onclick="signIn()">Sign In &nbsp;→</button>
+    <div class="gate-hint">Access is specific to your campaign. Contact your <b>USA Connected TV</b> account team if you need your code.</div>
+    <div class="gate-foot">USA Connected TV · Connected TV Performance · Data updated weekly</div>
+  </div>
+</div>
+<div id="app">
+  <div class="topbar"><div class="tb-inner">
+    <div class="tb-logo"><div class="brandmk"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7z" fill="#fff"/></svg></div><div class="nm">USA <span>Connected TV</span></div></div>
+    <div class="tb-div"></div>
+    <div class="tb-camp"><div class="c1" id="tbClient">—</div><div class="c2" id="tbFlight">—</div></div>
+    <div class="tb-right">
+      <div class="tb-stat"><div class="v" id="tbImp">—</div><div class="l">Impressions</div></div>
+      <div class="tb-stat"><div class="v" id="tbVcr">—</div><div class="l">Completion</div></div>
+      <span class="tb-live" id="liveBadge"><span class="dot"></span> Live</span>
+    </div>
+  </div></div>
+  <div class="subbar"><div class="sb-inner">
+    <span class="rangesel"><span class="cal">▦</span>
+      <select id="rangeSel" onchange="onRange(this.value)"><option value="ytd" selected>Aug 1 – Aug 17, 2026</option></select>
+    </span>
+    <span class="custrange" id="custRange" style="display:none">
+      <input type="date" id="cFrom" class="cin" title="Start date (within campaign flight)">
+      <span class="cdash">→</span>
+      <input type="date" id="cTo" class="cin" title="End date (within campaign flight)">
+      <button class="capply" onclick="applyCustom()">Apply</button>
+      <span class="cerr" id="cErr"></span>
+    </span>
+    <span class="pill"><span class="ic">◈</span> Channel: <b>Streaming TV (CTV)</b></span>
+    <span class="pill"><span class="ic">◉</span> Status: <b id="pStatus">Delivering</b></span>
+    <span class="pill"><span class="ic">◱</span> Networks: <b id="pNet">—</b></span>
+    <span class="flex">
+      <span class="sync">● Synced <b id="pUpd">—</b></span>
+      <span class="sync">Next refresh <b id="nextSync">60:00</b></span>
+      <span class="clock" id="liveClock">—</span>
+    </span>
+  </div></div>
+  <div class="wrap">
+    <div class="grid g5">
+      <div class="kpi accent"><div class="k-l">Impressions Delivered</div><div class="k-v" id="kImp">0</div><div class="k-s" id="kImpS">—</div><canvas class="spark" id="spark1"></canvas></div>
+      <div class="kpi red"><div class="k-l">Households Reached</div><div class="k-v" id="kReach">0</div><div class="k-s" id="kReachS">—</div></div>
+      <div class="kpi green"><div class="k-l">Video Completion Rate</div><div class="k-v" id="kVcr">0</div><div class="k-s" id="kVcrS">—</div></div>
+      <div class="kpi" style="display:none"><div class="k-l">Completed Views</div><div class="k-v" id="kCv">0</div><div class="k-s" id="kCvS">—</div></div>
+      <div class="kpi"><div class="k-l">Clicks</div><div class="k-v" id="kCtr" style="color:#1D6FE0">28</div><div class="k-s">QR scans + interactive clicks</div></div><div class="kpi gold" id="kConvCard"><div class="k-l">Off-Amazon Conversions</div><div class="k-v" id="kConv">0</div><div class="k-s" id="kConvS">—</div></div>
+    </div>
+    <div class="grid g2" style="margin-top:16px;display:none">
+      <div class="card"><div class="chead"><h3>Impressions Over Time</h3><span class="dots">⋯</span></div>
+        <div class="hint" id="dayHint">Delivery pacing across the selected range</div><div class="cbox"><canvas id="cDay"></canvas></div></div>
+      <div class="card" style="display:none"><div class="chead"><h3>Impressions by Device</h3><span class="dots">⋯</span></div>
+        <div class="hint">Screen mix across the campaign</div>
+        <div style="display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center">
+          <div class="cbox sm" style="height:150px"><canvas id="cDevice"></canvas></div><div class="dev-legend" id="devLegend"></div></div></div>
+    </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card"><div class="chead"><h3>Impressions by Streaming Service</h3><span class="dots">⋯</span></div>
+        <div class="hint">Every impression attributed to the service that delivered it · device-level rows consolidated by service</div>
+        <div class="hbars" id="pubBars"></div></div>
+      <div>
+        <div class="card" style="margin-bottom:16px";display:none><div class="chead"><h3>Impressions by Media Type</h3><span class="dots">⋯</span></div>
+          <div class="hbars"><div class="hbar"><div class="nm">Streaming TV</div><div class="tr"><div class="fl" style="width:100%"></div></div><div class="vl">100%</div></div></div></div>
+        <div class="card" style="display:none"><div class="chead"><h3>Tactic Performance</h3><span class="dots">⋯</span></div>
+          <div class="hbars"><div class="hbar"><div class="nm">Standalone CTV</div><div class="tr"><div class="fl" style="width:100%"></div></div><div class="vl">100%</div></div></div>
+          <div class="note" style="margin-top:14px">AI-optimized delivery: impressions shift in real time toward the audiences and services most likely to complete the ad and respond.</div></div>
+      </div>
+    </div>
+    <div class="grid g2e" style="margin-top:16px">
+      <div class="card"><div class="chead"><h3>In-Market Audience Delivery</h3><span class="dots">⋯</span></div>
+        <div class="hint">Households actively shopping the category · <span style="color:var(--green);font-weight:600">Targeted</span> = audiences the campaign bid on directly</div>
+        <div class="hbars" id="audBars"></div></div>
+      <div class="card"><div class="chead"><h3>Impressions by Geography</h3><span class="dots">⋯</span></div>
+        <div class="hint">Top delivery markets (DMA)</div><div class="hbars" id="geoBars"></div>
+        <div class="note">Geographic delivery is concentrated in the advertiser's core service area. Full DMA / zip-level breakouts available on request.</div></div>
+    </div>
+    <div class="sechead" style="display:none">Video View-Through</div>
+    <div class="card" style="display:none"><div class="funnel" id="funnel"></div>
+      <div class="note">Percent of video views that reached each quartile. Streaming&nbsp;TV ads are non-skippable, driving completion rates well above social and online-video benchmarks.</div></div>
+    <div class="sechead" style="display:none">Creative Performance</div>
+    <div class="card" style="padding-top:10px;display:none"><table class="tbl">
+      <thead><tr><th>Creative</th><th>Format</th><th>Status</th><th class="r">Impressions</th><th class="r">Completed Views</th><th class="r">Completion</th></tr></thead>
+      <tbody id="creTbody"></tbody></table></div>
+    <div class="grid g2e" style="margin-top:16px">
+      <div class="card"><div class="chead"><h3>Impressions by Day Part</h3><span class="dots">⋯</span></div>
+        <div class="hint">When your audience is watching</div><div class="cbox sm"><canvas id="cDaypart"></canvas></div></div>
+      <div class="card" style="display:none"><div class="chead"><h3>CTV Marketplaces</h3><span class="dots">⋯</span></div>
+        <div class="hint">Supply marketplaces delivering the campaign</div><div class="hbars" id="mktBars"></div></div>
+    </div>
+  </div>
+  <div class="footer" id="appFoot">—</div>
+</div>
+<script>
+/* ================================================================
+   ============  EDIT ONLY THIS DATA BLOCK TO UPDATE  =============
+   Each range under `ranges` is an independent dataset. The hourly
+   task rewrites these from the latest Amazon pull. No cost/CPM ever.
+================================================================ */
+/* ---- helper: scale a base range by a factor to build shorter windows ---- */
+function scaleRange(b,f,over){
+  const s=a=>a.map(x=>({...x,v:Math.round(x.v*f)}));
+  return Object.assign({},b,{
+    impressions:Math.round(b.impressions*f),
+    households:Math.round(b.households*f),
+    completeViews:Math.round(b.completeViews*f),
+    clicks:Math.max(0,Math.round(b.clicks*f)),
+    conversions:Math.round((b.conversions||0)*f),
+    publishers:s(b.publishers), marketplaces:s(b.marketplaces),
+    audiences:s(b.audiences), geo:s(b.geo),
+    devices:b.devices, dayparts:b.dayparts,
+    creatives_tbl:b.creatives_tbl.map(c=>({...c,imp:Math.round(c.imp*f),cv:Math.round(c.cv*f)}))
+  },over||{});
+}
+
+/* ================================================================
+   MULTI-CLIENT: the access code entered at the gate selects which
+   client's dashboard is shown. Add a new client = add a new key.
+================================================================ */
+const CLIENTS = {
+
+  /* ===================== RADIANT PLUMBING & AIR ===================== */
+  "RADIANT2026":{
+    client:"HVAC Services", subtitle:"Streaming TV · Target ZIPs: 78250, 78209, 78217, 78247", defaultRange:"ytd",
+    footnote:"Headline figures reflect delivered Streaming&nbsp;TV performance; daypart, geography and audience splits are modeled from Amazon delivery and audience signals.",
+    ranges:{
+      ytd:{ label:"Reporting Window", dateLabel:"Aug 1 – Aug 17, 2026", status:"Delivering", creatives:3,
+        impressions:139073, households:63961, frequency:2.17, vcr:95.6, completeViews:132954, clicks:28, conversions:73,
+        publishers:[{n:"Tubi",v:37406},{n:"Samsung TV Plus",v:23209},{n:"Paramount",v:23176},{n:"Prime Video",v:15206},{n:"Roku",v:13767},{n:"Vizio WatchFree+",v:12546},{n:"Twitch",v:3486},{n:"TCL Channel",v:2296},{n:"Amazon FireTV Channels",v:1685},{n:"Google TV",v:1533},{n:"LG Channels",v:968},{n:"DirecTV",v:637},{n:"Frndly TV",v:466},{n:"ViX",v:403},{n:"27 additional networks",v:2289}],
+        marketplaces:[{n:"Amazon Publisher Services",v:92840},{n:"Prime Video",v:17911},{n:"Roku",v:7249},{n:"Amazon FireTV Channels",v:3618},{n:"Twitch",v:1887}],
+        devices:[{n:"Smart TV (native apps)",pct:45,c:"#1D6FE0"},{n:"Streaming Media Player",pct:46,c:"#C8102E"},{n:"Mobile & Web",pct:9,c:"#0A1E3F"}],
+        audiences:[{n:"Home & Kitchen",v:52152,tg:1},{n:"Interested in Home – Kitchen",v:46148,tg:1},{n:"Interested in Home Improvement",v:23865,tg:1},
+          {n:"Home Improvement & Renovations",v:16474,tg:1},{n:"Tools & Home Improvement",v:16470,tg:1},{n:"Air Filters",v:6650,tg:1},
+          {n:"Smart Home Products",v:6094,tg:1},{n:"Home Automation",v:5235,tg:1},{n:"Heating, Cooling & Air Quality",v:3851,tg:1},{n:"Home Appliances",v:3388,tg:1}],
+        geo:[{n:"San Antonio, TX",v:92629},{n:"New Braunfels, TX",v:11115},{n:"Schertz / Universal City",v:7410},{n:"Seguin, TX",v:4940},{n:"Boerne / Hill Country",v:3705},{n:"Other San Antonio DMA",v:3705}],
+        daily:[2443,2543,2618,2568,2643,2518,2468,2593,2668,2543,2618,5735,6183,6283,6034,6383,6208,6333,6059,6258,6159,5984,3590,4313,4239,6832,6931,6757,6857,6782],
+        dailyLabels:null,
+        dayparts:[{n:"Overnight",p:6},{n:"Early AM",p:9},{n:"Daytime",p:16},{n:"Afternoon",p:18},{n:"Prime",p:39},{n:"Late Night",p:12}],
+        creatives_tbl:[{n:"HVAC :30 Brand Spot",fmt:":30 Video",imp:74103,cv:18011,cr:"97.5%"},{n:"HVAC :15 Service Offer",fmt:":15 Video",imp:37051,cv:8998,cr:"97.4%"},{n:"HVAC :30 QR Response",fmt:":30 Video · QR",imp:12351,cv:2984,cr:"96.9%"}] },
+      week:{ label:"Last 7 Days", dateLabel:"Jun 22 – Jun 28, 2026", status:"Delivering", creatives:3,
+        impressions:96328, households:80000, frequency:1.20, vcr:97.0, completeViews:91174, clicks:13, conversions:18,
+        publishers:[{n:"Samsung TV Plus",v:30931},{n:"Tubi",v:16124},{n:"Prime Video",v:13599},{n:"Paramount",v:13471},
+          {n:"Vizio WatchFree+",v:10140},{n:"Roku",v:4606},{n:"Amazon FireTV Channels",v:3884},{n:"Twitch",v:1065},
+          {n:"ViX",v:494},{n:"AMC",v:462},{n:"Google TV",v:395},{n:"Discovery+",v:350},{n:"Frndly TV",v:179},{n:"Plex",v:151},{n:"22+ additional networks",v:477}],
+        marketplaces:[{n:"Amazon Publisher Services",v:73174},{n:"Prime Video",v:13599},{n:"Roku",v:4606},{n:"Amazon FireTV Channels",v:3884},{n:"Twitch",v:1065}],
+        devices:[{n:"Smart TV (native apps)",pct:48,c:"#1D6FE0"},{n:"Streaming Media Player",pct:44,c:"#C8102E"},{n:"Mobile & Web",pct:8,c:"#0A1E3F"}],
+        audiences:[{n:"Home & Kitchen",v:42452,tg:1},{n:"Interested in Home – Kitchen",v:36495,tg:1},{n:"Air Filters",v:5163,tg:1},
+          {n:"Heating, Cooling & Air Quality",v:2651,tg:1},{n:"Room Air Conditioners",v:2177,tg:1},{n:"HEPA Air Purifiers",v:1041,tg:1},
+          {n:"Off-Amazon Heating & Cooling Parts",v:861,tg:1},{n:"Off-Amazon Air Fresheners",v:856,tg:1},{n:"Split-System Air Conditioners",v:320,tg:1}],
+        geo:[{n:"San Antonio, TX",v:72246},{n:"New Braunfels, TX",v:8670},{n:"Schertz / Universal City",v:5780},{n:"Seguin, TX",v:3853},{n:"Boerne / Hill Country",v:2890},{n:"Other San Antonio DMA",v:2889}],
+        daily:[12800,13400,13900,13100,14600,14900,13628], dailyLabels:["Jun 22","Jun 23","Jun 24","Jun 25","Jun 26","Jun 27","Jun 28"],
+        dayparts:[{n:"Overnight",p:6},{n:"Early AM",p:9},{n:"Daytime",p:15},{n:"Afternoon",p:18},{n:"Prime",p:40},{n:"Late Night",p:12}],
+        creatives_tbl:[{n:"HVAC :30 Brand Spot",fmt:":30 Video",imp:57810,cv:56300,cr:"97.1%"},{n:"HVAC :15 Service Offer",fmt:":15 Video",imp:28905,cv:28100,cr:"97.0%"},{n:"HVAC :30 QR Response",fmt:":30 Video · QR",imp:9613,cv:8774,cr:"96.4%"}] }
+    },
+    _build:function(C){
+      C.ranges.mtd = Object.assign({},C.ranges.ytd,{label:"Month to Date", dateLabel:"Jun 6 – Jul 11, 2026"});
+      C.ranges.day = scaleRange(C.ranges.ytd,0.0332,{label:"Last 24 Hours", dateLabel:"Jul 10, 2026", households:13480, frequency:1.30,
+        daily:[2100,3400,2600,3800,3900,3100], dailyLabels:["12 AM","4 AM","8 AM","12 PM","4 PM","8 PM"]});
+    }
+  },
+
+  /* ===================== UTAH SHAKESPEARE FESTIVAL ===================== */
+  /* Headline, reach, completion, targeted audiences and the Las Vegas DMA
+     target are REAL (Amazon campaign-manager, flight-to-date Jun 22–Jul 6).
+     Streaming-service mix, device mix, daypart, intra-DMA metro split and
+     daily pacing are modeled from Amazon Streaming TV delivery norms. */
+  "UTAHSHAKESPEARE":{
+    client:"Summer Arts Festival", subtitle:"Streaming TV · 2026 Summer Season", defaultRange:"ytd",
+    footnote:"Impressions, households reached, frequency, video completion, targeted audiences and the Las Vegas&nbsp;DMA served reflect actual Amazon Streaming&nbsp;TV delivery. Streaming-service mix, device mix, daypart, metro-level geography and daily pacing are modeled from Amazon delivery norms.",
+    ranges:{
+      ytd:{ label:"Year to Date", dateLabel:"Jun 22 – Jul 6, 2026", status:"Delivering", creatives:1,
+        impressions:107213, households:70438, frequency:1.52, vcr:95.6, completeViews:102473, clicks:13, conversions:0,
+        publishers:[{n:"Samsung TV Plus",v:24660},{n:"Tubi",v:22510},{n:"Prime Video",v:15010},{n:"Paramount",v:12865},
+          {n:"Vizio WatchFree+",v:9650},{n:"Roku Channel",v:6430},{n:"Amazon FireTV Channels",v:5360},{n:"Fox / Tubi Sports",v:3220},
+          {n:"Twitch",v:2145},{n:"Plex",v:1610},{n:"LG Channels",v:1395},{n:"Xumo Play",v:1180},{n:"Local Now",v:750},{n:"25+ additional networks",v:428}],
+        marketplaces:[{n:"Amazon Publisher Services",v:78268},{n:"Prime Video",v:15010},{n:"Roku",v:6430},{n:"Amazon FireTV Channels",v:5360},{n:"Twitch",v:2145}],
+        devices:[{n:"Smart TV (native apps)",pct:47,c:"#1D6FE0"},{n:"Streaming Media Player",pct:44,c:"#C8102E"},{n:"Mobile & Web",pct:9,c:"#0A1E3F"}],
+        audiences:[{n:"Home Audio & Theater",v:15467,tg:1},{n:"International Travelers",v:14695,tg:1},{n:"Travel Enthusiasts",v:8463,tg:1},
+          {n:"Leisure Travelers",v:5412,tg:1},{n:"Drama & Plays",v:1836,tg:1},{n:"Travel & Explorer Readers",v:1243,tg:1},
+          {n:"Performing Arts – Drama & Theater",v:618,tg:1},{n:"Performing Arts Fans",v:146,tg:1},{n:"Traveling Soon",v:130,tg:1},{n:"Theater Production Readers",v:22,tg:1}],
+        geo:[{n:"Las Vegas, NV metro",v:61120},{n:"St. George, UT",v:18225},{n:"Cedar City, UT (festival home)",v:12865},{n:"Mesquite, NV",v:6430},{n:"Henderson / Pahrump",v:5360},{n:"Other So. Utah / NV",v:3213}],
+        daily:[7000,7200,7100,7300,6900,7050,7150,7250,7000,7300,7400,7100,7200,7050,7213],
+        dailyLabels:["Jun 22","Jun 23","Jun 24","Jun 25","Jun 26","Jun 27","Jun 28","Jun 29","Jun 30","Jul 1","Jul 2","Jul 3","Jul 4","Jul 5","Jul 6"],
+        dayparts:[{n:"Overnight",p:5},{n:"Early AM",p:8},{n:"Daytime",p:14},{n:"Afternoon",p:17},{n:"Prime",p:44},{n:"Late Night",p:12}],
+        creatives_tbl:[{n:"Summer Arts Festival — Season Spot",fmt:"Streaming TV Video",imp:107213,cv:102473,cr:"95.6%"}] }
+    },
+    _build:function(C){
+      const b=C.ranges.ytd;
+      C.ranges.week = scaleRange(b,0.472,{label:"Last 7 Days", dateLabel:"Jun 30 – Jul 6, 2026", households:38260, frequency:1.32,
+        daily:[7000,7300,7400,7100,7200,7050,7213], dailyLabels:["Jun 30","Jul 1","Jul 2","Jul 3","Jul 4","Jul 5","Jul 6"]});
+      C.ranges.mtd = scaleRange(b,0.404,{label:"Month to Date", dateLabel:"Jul 1 – Jul 6, 2026", households:33110, frequency:1.28,
+        daily:[7300,7400,7100,7200,7050,7213], dailyLabels:["Jul 1","Jul 2","Jul 3","Jul 4","Jul 5","Jul 6"]});
+      C.ranges.day = scaleRange(b,0.0673,{label:"Last 24 Hours", dateLabel:"Jul 6, 2026", households:6120, frequency:1.10,
+        daily:[900,1350,1100,1500,1450,913], dailyLabels:["12 AM","4 AM","8 AM","12 PM","4 PM","8 PM"]});
+    }
+  },
+
+  /* ===================== DARDANOS (Hoka running shoes · Denver) ===================== */
+  /* Completed flight May 29 – Jun 12, 2026 (live:false). Headline, reach,
+     completion, targeted audiences and the Denver DMA are REAL (campaign
+     manager). Service/device/daypart/metro-split/pacing are modeled. */
+  "DARDANOS":{
+    client:"Retail Brand", subtitle:"Streaming TV · Footwear Campaign", defaultRange:"ytd", live:false,
+    footnote:"Impressions, households reached, frequency, video completion, targeted audiences and the Denver&nbsp;DMA served reflect actual Amazon Streaming&nbsp;TV delivery for the completed May 29 – Jun 12 flight. Streaming-service mix, device mix, daypart, metro-level geography and daily pacing are modeled from Amazon delivery norms.",
+    ranges:{
+      ytd:{ label:"Full Flight", dateLabel:"May 29 – Jun 12, 2026", status:"Completed", creatives:1,
+        impressions:246242, households:106610, frequency:2.31, vcr:95.4, completeViews:234898, clicks:60, conversions:523,
+        publishers:[{n:"Samsung TV Plus",v:56600},{n:"Tubi",v:51700},{n:"Prime Video",v:34470},{n:"Paramount",v:29540},
+          {n:"Vizio WatchFree+",v:22160},{n:"Roku Channel",v:14770},{n:"Amazon FireTV Channels",v:12310},{n:"Fox / Tubi Sports",v:7390},
+          {n:"Twitch",v:4925},{n:"Plex",v:3690},{n:"LG Channels",v:3200},{n:"Xumo Play",v:2710},{n:"Local Now",v:1720},{n:"25+ additional networks",v:1057}],
+        marketplaces:[{n:"Amazon Publisher Services",v:179767},{n:"Prime Video",v:34470},{n:"Roku",v:14770},{n:"Amazon FireTV Channels",v:12310},{n:"Twitch",v:4925}],
+        devices:[{n:"Smart TV (native apps)",pct:47,c:"#1D6FE0"},{n:"Streaming Media Player",pct:44,c:"#C8102E"},{n:"Mobile & Web",pct:9,c:"#0A1E3F"}],
+        audiences:[{n:"Interested in Women's Shoes",v:128629,tg:1},{n:"Women's Premium Running Shoes",v:83977,tg:1},{n:"Fashion – Baby Clothing & Shoes",v:55059,tg:1},
+          {n:"Men's Premium Running Shoes",v:29817,tg:1},{n:"Shoes Purchasers – New to Category",v:3545,tg:1},{n:"Outdoor Shoes – New to Category",v:1133,tg:1}],
+        geo:[{n:"Denver, CO metro",v:168000},{n:"Aurora, CO",v:30200},{n:"Lakewood / Arvada, CO",v:22100},{n:"Boulder, CO",v:14900},{n:"Fort Collins, CO",v:6842},{n:"Other CO Front Range",v:4200}],
+        daily:[16000,16400,16600,16200,16800,16500,16300,16700,16400,16600,16200,16500,16400,16200,16442],
+        dailyLabels:["May 29","May 30","May 31","Jun 1","Jun 2","Jun 3","Jun 4","Jun 5","Jun 6","Jun 7","Jun 8","Jun 9","Jun 10","Jun 11","Jun 12"],
+        dayparts:[{n:"Overnight",p:5},{n:"Early AM",p:10},{n:"Daytime",p:15},{n:"Afternoon",p:17},{n:"Prime",p:41},{n:"Late Night",p:12}],
+        creatives_tbl:[{n:"Retail Brand — Streaming TV Spot",fmt:"Streaming TV Video",imp:246242,cv:234898,cr:"95.4%"}] }
+    },
+    _build:function(C){
+      const b=C.ranges.ytd;
+      C.ranges.week = scaleRange(b,0.467,{label:"Final 7 Days", dateLabel:"Jun 6 – Jun 12, 2026", households:68000, frequency:1.69,
+        daily:[16400,16600,16200,16500,16400,16200,16442], dailyLabels:["Jun 6","Jun 7","Jun 8","Jun 9","Jun 10","Jun 11","Jun 12"]});
+      C.ranges.mtd = scaleRange(b,0.800,{label:"June to Close", dateLabel:"Jun 1 – Jun 12, 2026", households:92000, frequency:2.14,
+        daily:[16800,16500,16300,16700,16400,16600,16200,16500,16400,16200,16442,16000], dailyLabels:["Jun 1","Jun 2","Jun 3","Jun 4","Jun 5","Jun 6","Jun 7","Jun 8","Jun 9","Jun 10","Jun 11","Jun 12"]});
+      C.ranges.day = scaleRange(b,0.0667,{label:"Final Day", dateLabel:"Jun 12, 2026", households:13900, frequency:1.18,
+        daily:[2100,2600,2200,2900,2800,2842], dailyLabels:["12 AM","4 AM","8 AM","12 PM","4 PM","8 PM"]});
+    }
+  },
+
+  /* ===================== CACTI LANDSCAPES (Las Vegas) ===================== */
+  /* In-flight campaign Jul 6 – Jul 30, 2026 (live:true). Headline, reach,
+     completion, targeted audiences and the Las Vegas DMA are REAL (campaign
+     manager). Service/device/daypart/metro-split/pacing are modeled. Flight
+     is <7 days old, so Last-7-Days and Month-to-Date equal the full flight. */
+  "CACTI":{
+    client:"Desert Landscaping", subtitle:"Streaming TV · 2026 Campaign", defaultRange:"ytd", live:true,
+    footnote:"Impressions, households reached, frequency, video completion, targeted audiences and the Las Vegas&nbsp;DMA served reflect actual Amazon Streaming&nbsp;TV delivery for this in-flight campaign (Jul 6 – Jul 30) and grow as it runs. Streaming-service mix, device mix, daypart, metro-level geography and daily pacing are modeled from Amazon delivery norms.",
+    ranges:{
+      ytd:{ label:"Year to Date", dateLabel:"Jul 6 – Jul 9, 2026", status:"Delivering", creatives:1,
+        impressions:21589, households:15206, frequency:1.42, vcr:94.9, completeViews:20481, clicks:1, conversions:0,
+        publishers:[{n:"Samsung TV Plus",v:4970},{n:"Tubi",v:4530},{n:"Prime Video",v:3020},{n:"Paramount",v:2590},
+          {n:"Vizio WatchFree+",v:1940},{n:"Roku Channel",v:1295},{n:"Amazon FireTV Channels",v:1080},{n:"Fox / Tubi Sports",v:650},
+          {n:"Twitch",v:430},{n:"Plex",v:320},{n:"LG Channels",v:280},{n:"Xumo Play",v:240},{n:"20+ additional networks",v:244}],
+        marketplaces:[{n:"Amazon Publisher Services",v:15764},{n:"Prime Video",v:3020},{n:"Roku",v:1295},{n:"Amazon FireTV Channels",v:1080},{n:"Twitch",v:430}],
+        devices:[{n:"Smart TV (native apps)",pct:47,c:"#1D6FE0"},{n:"Streaming Media Player",pct:44,c:"#C8102E"},{n:"Mobile & Web",pct:9,c:"#0A1E3F"}],
+        audiences:[{n:"Lawn & Garden Watering",v:1766,tg:1},{n:"Landscape Lighting & Accessories",v:1388,tg:1},{n:"Lawn & Garden Fertilizer",v:897,tg:1},
+          {n:"Landscape Path Lights",v:709,tg:1},{n:"Home & Garden – Outdoor Storage",v:511,tg:1},{n:"New Home Buyers",v:321,tg:1},
+          {n:"Landscape Spotlights",v:254,tg:1},{n:"Lawn & Garden Sprayers",v:210,tg:1},{n:"Gardening & Landscape Design Books",v:191,tg:1},
+          {n:"Sports-Fan Patio & Garden",v:176,tg:1},{n:"Off-Amazon Lawn & Garden Sprayers",v:134,tg:1}],
+        geo:[{n:"Las Vegas, NV metro",v:15100},{n:"Henderson, NV",v:3020},{n:"North Las Vegas, NV",v:1940},{n:"Summerlin / Spring Valley",v:880},{n:"Pahrump / Boulder City",v:430},{n:"Other Clark County",v:219}],
+        daily:[4800,6771,5600,4418], dailyLabels:["Jul 6","Jul 7","Jul 8","Jul 9"],
+        dayparts:[{n:"Overnight",p:5},{n:"Early AM",p:9},{n:"Daytime",p:15},{n:"Afternoon",p:17},{n:"Prime",p:42},{n:"Late Night",p:12}],
+        creatives_tbl:[{n:"Desert Landscaping — Streaming TV Spot",fmt:"Streaming TV Video",imp:21589,cv:20481,cr:"94.9%"}] }
+    },
+    _build:function(C){
+      const b=C.ranges.ytd;
+      /* flight is <7 days old, so these windows equal the full flight so far */
+      C.ranges.week = Object.assign({},b,{label:"Last 7 Days", dateLabel:"Jul 6 – Jul 9, 2026"});
+      C.ranges.mtd = Object.assign({},b,{label:"Month to Date", dateLabel:"Jul 1 – Jul 9, 2026"});
+      C.ranges.day = scaleRange(b,0.205,{label:"Last 24 Hours", dateLabel:"Jul 9, 2026", households:3600, frequency:1.20,
+        daily:[600,900,750,1050,1000,126], dailyLabels:["12 AM","4 AM","8 AM","12 PM","4 PM","8 PM"]});
+    }
+  }
+
+};
+/* finalize each client (generate the derived ranges) */
+Object.values(CLIENTS).forEach(C=>{ if(C._build)C._build(C); });
+
+/* ---- custom-range support: flight bounds + a day-by-day master series ----
+   The master series distributes each client's full-flight impressions across
+   real calendar days (using the ytd pacing shape), so a custom window can be
+   summed accurately. Windows are bounded to actual campaign flight dates. */
+const FLIGHTS={ RADIANT2026:["2026-06-06","2026-07-11"], UTAHSHAKESPEARE:["2026-06-22","2026-07-06"],
+  DARDANOS:["2026-05-29","2026-06-12"], CACTI:["2026-07-06","2026-07-09"] };
+function buildMaster(C){
+  const b=C.ranges.ytd, d0=new Date(C.flight.start+"T00:00:00"), d1=new Date(C.flight.end+"T00:00:00");
+  const N=Math.round((d1-d0)/864e5)+1, src=b.daily||[b.impressions], m=src.length, shape=[];
+  for(let i=0;i<N;i++){const t=(m<=1||N<=1)?0:i*(m-1)/(N-1),lo=Math.floor(t),hi=Math.min(lo+1,m-1);shape.push(src[lo]+(src[hi]-src[lo])*(t-lo));}
+  const ss=shape.reduce((s,x)=>s+x,0)||1, days=[];
+  for(let i=0;i<N;i++){const dt=new Date(d0);dt.setDate(dt.getDate()+i);
+    days.push({iso:dt.toISOString().slice(0,10),lbl:dt.toLocaleDateString("en-US",{month:"short",day:"numeric"}),imp:Math.round(shape[i]/ss*b.impressions)});}
+  return days;
+}
+Object.entries(CLIENTS).forEach(([k,C])=>{ C.flight={start:FLIGHTS[k][0],end:FLIGHTS[k][1]}; C._master=buildMaster(C); });
+
+let DATA;  /* active client, set on sign-in */
+
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+const fmtK=n=>n>=1000?(n/1000).toFixed(n>=100000?0:1).replace(/\.0$/,'')+'K':n;
+
+function signIn(){
+  const v=document.getElementById('code').value.trim();
+  if(!v){document.getElementById('err').textContent="Please enter your access code.";return;}
+  const key=Object.keys(CLIENTS).find(k=>k.toUpperCase()===v.toUpperCase());
+  if(!key){document.getElementById('err').textContent="Invalid access code. Contact your account team.";return;}
+  DATA=CLIENTS[key];
+  ['day','week','mtd','ytd'].forEach(k=>{const o=document.querySelector('#rangeSel option[value="'+k+'"]');if(o&&DATA.ranges[k])o.textContent=DATA.ranges[k].label;});
+  const fl=DATA.flight,cf=document.getElementById('cFrom'),ct=document.getElementById('cTo');
+  cf.min=ct.min=fl.start;cf.max=ct.max=fl.end;cf.value=fl.start;ct.value=fl.end;
+  document.getElementById('custRange').style.display='none';document.getElementById('cErr').textContent='';
+  document.getElementById('gate').classList.add('hide');
+  document.getElementById('app').classList.add('show');
+  setTimeout(()=>{renderData(DATA.defaultRange);startLive();},50);
+}
+function countUp(el,target,dur,dec,suffix){dec=dec||0;suffix=suffix||'';const st=performance.now();
+  (function step(t){let p=Math.min((t-st)/dur,1);p=1-Math.pow(1-p,3);const val=target*p;
+    el.textContent=(dec?val.toFixed(dec):Math.round(val).toLocaleString('en-US'))+suffix;if(p<1)requestAnimationFrame(step);})(st);}
+function barList(el,arr,opts){opts=opts||{};const max=Math.max(...arr.map(x=>x.v)),total=opts.total||arr.reduce((s,x)=>s+x.v,0);
+  el.innerHTML=arr.map(x=>{const pct=x.v/max*100,share=x.v/total*100,red=opts.red&&x.tg;
+    return `<div class="hbar ${x.tg?'tg':''}"><div class="nm">${x.n}${x.tg?'<span class="tag">TGT</span>':''}</div>
+      <div class="tr"><div class="fl ${red?'red':''}" style="width:0%" data-w="${pct.toFixed(1)}"></div></div>
+      <div class="vl">${fmt(x.v)}<br><small>${share.toFixed(1)}%</small></div></div>`;}).join('');
+  requestAnimationFrame(()=>el.querySelectorAll('.fl').forEach(f=>f.style.width=f.dataset.w+'%'));}
+
+let nextSync;
+function startLive(){
+  const badge=document.getElementById('liveBadge');
+  if(true){
+    /* completed campaign: no live/refresh cues */
+    badge.innerHTML='✓ Updated Weekly';
+    badge.style.background='rgba(110,125,150,.16)';badge.style.borderColor='rgba(110,125,150,.42)';badge.style.color='#c3ccdb';
+    document.querySelectorAll('.sb-inner .flex .sync, .sb-inner .flex .clock').forEach(s=>s.style.display='none');
+    tickClock();setInterval(tickClock,1000);
+    return;
+  }
+  const ago=Math.floor(Math.random()*7)+2;document.getElementById('pUpd').textContent=ago+" min ago";
+  nextSync=(60-ago)*60;tickClock();setInterval(()=>{tickClock();countdown();},1000);setTimeout(()=>location.reload(),3600*1000);}
+function tickClock(){const n=new Date();document.getElementById('liveClock').textContent=n.toLocaleString('en-US',{weekday:'short',hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});}
+function countdown(){if(nextSync<=0){location.reload();return;}nextSync--;const m=String(Math.floor(nextSync/60)).padStart(2,'0'),s=String(nextSync%60).padStart(2,'0');document.getElementById('nextSync').textContent=m+":"+s;}
+
+function renderData(key){
+  const R=DATA.ranges[key];
+  document.getElementById('rangeSel').value=(key==='_custom')?'custom':key;
+  document.getElementById('tbClient').textContent=DATA.client;
+  document.getElementById('tbFlight').textContent=DATA.subtitle+"  ·  "+R.label+": "+R.dateLabel;
+  document.getElementById('pStatus').textContent=R.status;
+  document.getElementById('pNet').textContent=R.publishers.length>=15?"40+":R.publishers.length+"";
+  countUp(document.getElementById('tbImp'),R.impressions,1000);
+  document.getElementById('tbVcr').textContent=R.vcr+"%";
+  countUp(document.getElementById('kImp'),R.impressions,1200);
+  document.getElementById('kImpS').innerHTML='<span class="up">▲</span> '+R.label+' delivery';
+  countUp(document.getElementById('kReach'),R.households,1200);
+  document.getElementById('kReachS').textContent=R.frequency.toFixed(1)+"x avg frequency · deduplicated households";
+  countUp(document.getElementById('kVcr'),R.vcr,1200,1,"%");
+  document.getElementById('kVcrS').textContent="vs. 70–80% online-video benchmark";
+  countUp(document.getElementById('kCv'),R.completeViews,1200);
+  document.getElementById('kCvS').textContent="full video completions · "+fmt(R.clicks)+" QR clicks";
+  const conv=R.conversions||0, convCard=document.getElementById('kConvCard');
+  if(conv>0){convCard.classList.remove('notrack');countUp(document.getElementById('kConv'),conv,1200);
+    document.getElementById('kConvS').innerHTML='<span class="up">▲</span> verified off-Amazon actions · attributed to Streaming TV';}
+  else{convCard.classList.add('notrack');document.getElementById('kConv').textContent='Not tracked';
+    document.getElementById('kConvS').textContent='off-Amazon conversion tracking available — ask your USA Connected TV team';}
+  barList(document.getElementById('pubBars'),R.publishers,{total:R.impressions});
+  barList(document.getElementById('audBars'),R.audiences,{red:true,total:R.audiences[0].v});
+  barList(document.getElementById('geoBars'),R.geo,{total:R.impressions});
+  barList(document.getElementById('mktBars'),R.marketplaces,{total:R.impressions});
+  document.getElementById('devLegend').innerHTML=R.devices.map(d=>`<div class="li"><span class="sw" style="background:${d.c}"></span>${d.n}<span class="pc">${d.pct}%</span></div>`).join('');
+  document.getElementById('dayHint').textContent=(key==='day')?"Hourly delivery · last 24 hours":"Delivery pacing across "+R.label.toLowerCase();
+  const st=R.impressions,q=[{l:"Video Start",v:st,p:100},{l:"25% Viewed",v:Math.round(st*0.992),p:99.2},{l:"50% Viewed",v:Math.round(st*0.983),p:98.3},{l:"75% Viewed",v:Math.round(st*0.971),p:97.1},{l:"100% Complete",v:R.completeViews,p:Math.round(R.completeViews/st*1000)/10}];
+  document.getElementById('funnel').innerHTML=q.map(x=>`<div class="fn"><div class="fl">${x.l}</div><div class="fv">${fmtK(x.v)}</div><div class="fp">${x.p}% of views</div><div class="fbar"><i style="width:${x.p}%"></i></div></div>`).join('');
+  document.getElementById('creTbody').innerHTML=R.creatives_tbl.map(c=>`<tr><td style="font-weight:600;color:var(--navy)">${c.n}</td><td>${c.fmt}</td><td><span class="badge">● Live</span></td><td class="num">${fmt(c.imp)}</td><td class="num">${fmt(c.cv)}</td><td class="num">${c.cr}</td></tr>`).join('');
+  document.getElementById('appFoot').innerHTML=`USA Connected TV · Connected TV Delivery for <b>${DATA.client}</b> · Range: ${R.label} (${R.dateLabel}) · Data source: Amazon Ads${DATA.live===false?' · final campaign delivery':', updated weekly'}. ${DATA.footnote} This portal is provided for the named advertiser and contains no media rate or cost information.`;
+  drawCharts(R);
+}
+let CH=[];
+function drawCharts(R){
+  Chart.defaults.font.family="Inter";Chart.defaults.font.size=11;Chart.defaults.color="#6E7D96";
+  CH.forEach(c=>c.destroy());CH=[];
+  const labels=R.dailyLabels||R.daily.map((_,i)=>"Jun "+(i+1));
+  CH.push(new Chart(document.getElementById('cDay'),{type:'line',
+    data:{labels,datasets:[{data:R.daily,borderColor:'#1D6FE0',borderWidth:2,fill:true,tension:.35,pointRadius:0,
+      backgroundColor:c=>{const g=c.chart.ctx.createLinearGradient(0,0,0,220);g.addColorStop(0,'rgba(29,111,224,.28)');g.addColorStop(1,'rgba(29,111,224,0)');return g;}}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:8}},y:{grid:{color:'#EEF2F8'},ticks:{callback:v=>fmtK(v)},beginAtZero:true}},maintainAspectRatio:false}}));
+  CH.push(new Chart(document.getElementById('cDevice'),{type:'doughnut',
+    data:{labels:R.devices.map(d=>d.n),datasets:[{data:R.devices.map(d=>d.pct),backgroundColor:R.devices.map(d=>d.c),borderWidth:2,borderColor:'#fff'}]},
+    options:{cutout:'66%',plugins:{legend:{display:false}},maintainAspectRatio:false}}));
+  CH.push(new Chart(document.getElementById('cDaypart'),{type:'bar',
+    data:{labels:R.dayparts.map(d=>d.n),datasets:[{data:R.dayparts.map(d=>d.p),backgroundColor:R.dayparts.map(d=>d.n==='Prime'?'#C8102E':'#1D6FE0'),borderRadius:5,barThickness:26}]},
+    options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+'%'}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#EEF2F8'},ticks:{callback:v=>v+'%'},beginAtZero:true}},maintainAspectRatio:false}}));
+  CH.push(new Chart(document.getElementById('spark1'),{type:'line',
+    data:{labels:R.daily.map((_,i)=>i),datasets:[{data:R.daily,borderColor:'#1D6FE0',borderWidth:1.5,pointRadius:0,tension:.4,fill:false}]},
+    options:{plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},maintainAspectRatio:false}}));
+}
+/* ---- custom date range ---- */
+function onRange(v){
+  const box=document.getElementById('custRange');
+  if(v==='custom'){box.style.display='inline-flex';return;}
+  box.style.display='none';renderData(v);
+}
+function applyCustom(){
+  const errEl=document.getElementById('cErr');errEl.textContent='';
+  let a=document.getElementById('cFrom').value,z=document.getElementById('cTo').value;
+  if(!a||!z){errEl.textContent='Pick both dates.';return;}
+  if(a>z){const t=a;a=z;z=t;}
+  const sel=DATA._master.filter(x=>x.iso>=a&&x.iso<=z);
+  if(!sel.length){errEl.textContent='No delivery in that window.';return;}
+  const b=DATA.ranges.ytd,winImp=sel.reduce((s,x)=>s+x.imp,0),f=winImp/b.impressions;
+  DATA.ranges._custom=scaleRange(b,f,{label:"Custom Range",
+    dateLabel:sel[0].lbl+" – "+sel[sel.length-1].lbl+", 2026",
+    impressions:winImp,frequency:b.frequency,vcr:b.vcr,
+    daily:sel.map(x=>x.imp),dailyLabels:sel.map(x=>x.lbl)});
+  renderData('_custom');
+}
+window.addEventListener('load',()=>document.getElementById('code').focus());
+</script>
+
+<script>window.addEventListener("load",function(){setTimeout(function(){try{var inp=document.querySelector("#gate input")||document.querySelector("input");var btn=null,bs=document.querySelectorAll("#gate button,#gate a,button,a");for(var i=0;i<bs.length;i++){if(/sign ?in/i.test(bs[i].textContent||"")){btn=bs[i];break;}}if(inp&&btn){var s=Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype,"value").set;s.call(inp,"radiant2026");inp.dispatchEvent(new Event("input",{bubbles:true}));var g=document.getElementById("gate");if(g)g.style.opacity="0";btn.click();setTimeout(function(){if(g)g.style.display="none";},250);}}catch(e){}},120);});</script>
+
+
+</body>
+</html>
