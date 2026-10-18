@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Industry Solutions | USA Connected TV</title>
+  <meta name="description" content="See how USA Connected TV builds a streaming TV audience for your industry with Amazon Ads: gyms, jewelry stores, HVAC, plumbing, casinos and resorts, and personal injury law." />
+  <link rel="stylesheet" href="/solutions/solutions.css" />
+  <script src="/analytics.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" class="brand-mark"><span class="usa">USA </span><span class="ctv">Connected TV</span></a>
+      <nav class="nav-links" id="navLinks">
+        <a href="/#what">What is CTV</a>
+        <a href="/#why">Why Us</a>
+        <a href="/#production">Video Production</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/#contact">Contact</a>
+        <a class="nav-cta" href="/#contact">Get Started</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <section class="sol-hero">
+    <div class="sol-hero-inner">
+      <div>
+        <h1>Your customers are already watching. We make sure they see you.</h1>
+        <p class="lede">USA Connected TV puts your commercial on streaming TV through Amazon Ads, using two kinds of targeting together.</p>
+        <a class="incentive" href="tel:8587265524" data-cta="phone"><strong>Ask about our new advertiser incentive programs.</strong> New advertisers typically earn Amazon gift cards* based on investment level.</a>
+      </div>
+      <div class="how">
+        <div>
+          <h3>Manual targeting</h3>
+          <p>We hand-pick the audiences most likely to buy from you, based on what people in your area actually shop for, like homeowners buying drain cleaner for a plumber or couples on a wedding registry for a jeweler.</p>
+        </div>
+        <div>
+          <h3>Dynamic targeting</h3>
+          <p>Amazon’s machine learning layers on top, finding more households who behave like your best prospects.</p>
+        </div>
+        <p class="together">Together, your ad runs on the big-screen TV in the homes most likely to call you, not on everyone who happens to be watching.</p>
+      </div>
+    </div>
+  </section>
+
+  <nav class="guide" aria-label="Industries">
+    <div class="guide-inner">
+      <p class="guide-prompt">Choose your industry to see how we’d build your audience.</p>
+      <div class="guide-tabs" id="guideTabs"></div>
+    </div>
+  </nav>
+
+  <main class="panel" id="panel">
+    <noscript><p>Call <a href="tel:8587265524">858-726-5524</a> or email <a href="mailto:cory@usaconnectedtv.com">cory@usaconnectedtv.com</a> for a custom plan for your business.</p></noscript>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand"><span class="usa">USA </span><span class="ctv">Connected TV</span></div>
+      <div class="footer-tag">Streaming TV Advertising · Powered by Amazon Ads</div>
+      <div class="footer-contact">
+        <a href="tel:8587265524">858-726-5524</a><span class="footer-sep">·</span><a href="mailto:cory@usaconnectedtv.com">cory@usaconnectedtv.com</a>
+      </div>
+      <div class="footer-legal">© <span id="year">2026</span> USA Connected TV, Inc. All rights reserved.<span class="footer-sep">·</span><a href="/privacy.html">Privacy Policy</a></div>
+    </div>
+  </footer>
+
+  <script src="/solutions/industries.js"></script>
+  <script src="/solutions/solutions.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    var t = document.getElementById('navToggle'), n = document.getElementById('navLinks');
+    t.addEventListener('click', function () { n.classList.toggle('open'); });
+    function pin() { document.querySelector('.guide').style.top = document.querySelector('header').offsetHeight + 'px'; }
+    pin(); window.addEventListener('resize', pin);
+  </script>
+</body>
+</html>
