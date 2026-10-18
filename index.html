@@ -6,6 +6,7 @@
   <meta name="description" content="USA Connected TV puts your business on streaming TV — non-skippable :30 commercials on Prime Video, Hulu, Roku, ESPN and more, powered by Amazon Ads. Local targeting, pay per completed view, on-air in days." />
   <title>USA Connected TV — Streaming TV Advertising | Powered by Amazon Ads</title>
 
+  <script src="/analytics.js"></script>
   <style>
     /* ---------- Reset / base ---------- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -403,6 +404,22 @@
     }
     .footer-legal a { color: #B6BCC4; border-bottom: 1px dotted #565959; }
     .footer-legal a:hover { color: var(--amz-orange); }
+
+    /* ---------- Incentive callout ---------- */
+    .incentive { display: block; margin: 30px auto 0; max-width: 640px; background: rgba(255,153,0,0.12); border: 1.5px solid var(--amz-orange); border-radius: 6px; padding: 16px 22px; color: #FFFFFF; font-size: 17px; line-height: 1.45; }
+    .incentive strong { color: var(--amz-orange); }
+    .incentive-fine { display: block; margin-top: 6px; font-size: 12px; color: #B6BCC4; }
+
+    /* ---------- Industry solutions banner ---------- */
+    .ind-banner { background: var(--amz-orange); color: var(--amz-navy-deep); padding: 34px 24px; }
+    .ind-banner-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 18px 32px; align-items: center; }
+    .ind-banner h2 { font-size: clamp(24px, 3vw, 32px); line-height: 1.15; margin: 0; color: var(--amz-navy-deep); }
+    .ind-banner-btn { display: inline-block; background: var(--amz-navy-deep); color: #FFFFFF; font-weight: 800; font-size: 16px; padding: 15px 28px; border-radius: 4px; white-space: nowrap; transition: background 0.2s; }
+    .ind-banner-btn:hover { background: var(--amz-navy); }
+    .ind-chips { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+    .ind-chips a { font-size: 14px; font-weight: 700; padding: 6px 13px; border: 1.5px solid rgba(19,26,34,0.45); border-radius: 18px; transition: background 0.2s; }
+    .ind-chips a:hover { background: rgba(255,255,255,0.35); }
+    @media (max-width: 760px) { .ind-banner-inner { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -441,6 +458,8 @@
         <a class="hero-cta hero-cta-alt" href="sample-dashboard.html">See a Sample Dashboard</a>
       </div>
 
+      <a class="incentive" href="#contact"><strong>Ask about our new advertiser incentive programs.</strong> New advertisers typically earn Amazon gift cards* based on investment level.<span class="incentive-fine">*Amazon is not a sponsor of this promotion. Amazon gift cards are subject to Amazon’s gift card terms.</span></a>
+
       <div class="powered">
         <span class="powered-by">Powered by</span>
         <span class="amz-text">Amazon Ads</span>
@@ -460,6 +479,15 @@
       <span class="net-badge para">Paramount+</span>
       <span class="net-badge fox">FOX</span>
       <span class="net-badge sam">Samsung TV</span>
+    </div>
+  </section>
+
+  <!-- ============ INDUSTRY SOLUTIONS BANNER ============ -->
+  <section class="ind-banner">
+    <div class="ind-banner-inner">
+      <h2>Find the solution that’s right for your industry.</h2>
+      <a class="ind-banner-btn" href="/solutions/" data-sol="all">See industry solutions</a>
+      <div class="ind-chips" id="indChips"></div>
     </div>
   </section>
 
@@ -699,6 +727,21 @@
       var f = document.getElementById('contact-form'), t = document.getElementById('form-thanks');
       if (f && t) { f.style.display = 'none'; t.style.display = 'block'; }
     }
+  </script>
+  <script src="/solutions/industries.js"></script>
+  <script>
+    (function () {
+      var box = document.getElementById('indChips');
+      if (box && window.USA_INDUSTRIES) {
+        box.innerHTML = window.USA_INDUSTRIES.map(function (i) {
+          return '<a href="/solutions/' + i.slug + '/" data-sol="' + i.slug + '">' + i.name.replace(/&/g, '&amp;') + '</a>';
+        }).join('');
+      }
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[data-sol]');
+        if (a && window.usaTrack) window.usaTrack('homepage_solutions_click', { industry: a.getAttribute('data-sol') });
+      });
+    })();
   </script>
 </body>
 </html>
