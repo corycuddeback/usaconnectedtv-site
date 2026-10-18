@@ -1,0 +1,115 @@
+/* USA Connected TV — Industry Solutions (shares the homepage palette) */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Amazon Ember", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #232F3E; background: #FFFFFF; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+:root {
+  --amz-orange: #FF9900; --amz-orange-dark: #E47911; --amz-navy: #232F3E;
+  --amz-navy-deep: #131A22; --amz-gray-bg: #F3F3F3; --amz-gray-line: #DDDDDD;
+  --amz-text-muted: #565959; --wash: #FFF7EA;
+}
+:focus-visible { outline: 3px solid var(--amz-orange); outline-offset: 2px; }
+
+/* Header (same as homepage) */
+header { background: var(--amz-navy); color: #fff; padding: 14px 24px; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+.header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand-mark { font-weight: 800; font-size: 23px; letter-spacing: .3px; line-height: 1; white-space: nowrap; }
+.brand-mark .usa { color: #fff; } .brand-mark .ctv { color: var(--amz-orange); }
+.nav-links { display: flex; align-items: center; gap: 26px; font-size: 14px; font-weight: 600; color: #DDE2E8; }
+.nav-links a:hover { color: var(--amz-orange); }
+.nav-cta { background: var(--amz-orange); color: var(--amz-navy-deep) !important; font-weight: 800; font-size: 13px; letter-spacing: .5px; text-transform: uppercase; padding: 10px 18px; border-radius: 22px; white-space: nowrap; }
+.nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; align-items: flex-start; position: absolute; top: 100%; left: 0; right: 0; background: var(--amz-navy-deep); padding: 18px 24px; gap: 16px; }
+  .nav-toggle { display: block; }
+}
+
+/* Intro */
+.sol-hero {
+  background: radial-gradient(ellipse at 85% 10%, rgba(255,153,0,.16), transparent 55%), linear-gradient(135deg, var(--amz-navy-deep), var(--amz-navy));
+  color: #fff; padding: 64px 24px 56px;
+}
+.sol-hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: start; }
+.sol-hero h1 { font-size: clamp(32px, 4.6vw, 50px); line-height: 1.08; font-weight: 800; letter-spacing: -1px; margin-bottom: 20px; max-width: 18ch; }
+.sol-hero .lede { font-size: 18px; color: #DDE2E8; max-width: 52ch; }
+.how { border-left: 3px solid var(--amz-orange); padding-left: 24px; display: grid; gap: 22px; }
+.how h3 { font-size: 17px; font-weight: 800; color: var(--amz-orange); margin-bottom: 4px; }
+.how p { font-size: 15.5px; color: #DDE2E8; }
+.how .together { color: #fff; font-weight: 600; }
+@media (max-width: 860px) { .sol-hero-inner { grid-template-columns: 1fr; gap: 32px; } }
+
+/* Channel guide (industry tabs) */
+.guide { background: #fff; border-bottom: 1px solid var(--amz-gray-line); position: sticky; top: 64px; z-index: 40; }
+.guide-inner { max-width: 1100px; margin: 0 auto; padding: 18px 24px 0; }
+.guide-prompt { font-size: 15px; color: var(--amz-text-muted); margin-bottom: 10px; }
+.guide-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.guide-tabs::-webkit-scrollbar { display: none; }
+.guide-tab {
+  flex: 0 0 auto; padding: 12px 18px 14px; font-size: 15.5px; font-weight: 700; color: var(--amz-text-muted);
+  border-bottom: 4px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s;
+}
+.guide-tab:hover { color: var(--amz-navy); border-bottom-color: #FFD699; }
+.guide-tab[aria-current="page"] { color: var(--amz-navy); border-bottom-color: var(--amz-orange); }
+
+/* Industry panel */
+.panel { max-width: 1100px; margin: 0 auto; padding: 52px 24px 72px; }
+.pitch-label { font-size: 15px; font-weight: 700; color: var(--amz-orange-dark); margin-bottom: 10px; }
+.pitch { font-size: clamp(22px, 2.8vw, 31px); line-height: 1.3; font-weight: 700; letter-spacing: -.3px; max-width: 42ch; margin-bottom: 52px; }
+.reach-title { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+.reach-sub { color: var(--amz-text-muted); font-size: 16px; margin-bottom: 26px; max-width: 62ch; }
+.groups { border-top: 2px solid var(--amz-navy); }
+.group { display: grid; grid-template-columns: 290px 1fr; gap: 32px; padding: 26px 0; border-bottom: 1px solid var(--amz-gray-line); }
+.group h3 { font-size: 19px; font-weight: 800; line-height: 1.3; }
+.group .why { font-size: 16px; color: #3A4553; margin-bottom: 12px; max-width: 64ch; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
+.pills li { background: var(--amz-gray-bg); border: 1px solid #E6E6E6; border-radius: 3px; font-size: 13px; font-weight: 600; color: var(--amz-navy); padding: 5px 10px; }
+.pills-note { font-size: 13px; color: var(--amz-text-muted); margin-top: 14px; }
+@media (max-width: 760px) { .group { grid-template-columns: 1fr; gap: 8px; } }
+
+/* Call to action */
+.cta-band { margin-top: 56px; background: var(--amz-navy); color: #fff; border-radius: 6px; padding: 38px 40px; display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; }
+.cta-band h2 { font-size: 27px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
+.cta-band p { color: #DDE2E8; font-size: 16px; max-width: 48ch; }
+.cta-actions { display: flex; flex-direction: column; gap: 12px; }
+.btn { display: inline-block; text-align: center; font-weight: 700; font-size: 16px; padding: 14px 26px; border-radius: 4px; transition: background .2s; }
+.btn-primary { background: var(--amz-orange); color: var(--amz-navy-deep); }
+.btn-primary:hover { background: #FFB347; }
+.btn-ghost { border: 1.5px solid rgba(255,255,255,.55); color: #fff; }
+.btn-ghost:hover { background: rgba(255,255,255,.1); }
+@media (max-width: 760px) { .cta-band { grid-template-columns: 1fr; padding: 30px 24px; } }
+.privacy-note { margin-top: 28px; font-size: 14.5px; color: var(--amz-text-muted); max-width: 70ch; padding-left: 14px; border-left: 3px solid var(--amz-gray-line); }
+
+/* /solutions/ landing state: pick an industry */
+.picker-title { font-size: 26px; font-weight: 800; margin-bottom: 22px; }
+.picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0; border-top: 2px solid var(--amz-navy); }
+.pick { display: block; padding: 22px 20px 22px 0; border-bottom: 1px solid var(--amz-gray-line); }
+.pick h3 { font-size: 19px; font-weight: 800; margin-bottom: 6px; }
+.pick p { font-size: 15px; color: #3A4553; }
+.pick .go { display: inline-block; margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--amz-orange-dark); }
+.pick:hover h3 { color: var(--amz-orange-dark); }
+
+/* Footer (same as homepage) */
+footer { background: var(--amz-navy-deep); color: #9AA1AB; text-align: center; }
+.footer-inner { max-width: 1100px; margin: 0 auto; padding: 40px 24px 30px; }
+.footer-brand { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.footer-brand .usa { color: #fff; } .footer-brand .ctv { color: var(--amz-orange); }
+.footer-tag { font-size: 14px; color: #B6BCC4; margin-bottom: 14px; }
+.footer-contact { font-size: 15px; color: #DDE2E8; margin-bottom: 18px; }
+.footer-contact a { color: var(--amz-orange); font-weight: 600; }
+.footer-sep { margin: 0 10px; color: #565959; }
+.footer-legal { font-size: 13px; color: #8A929C; }
+.footer-legal a { color: #B6BCC4; border-bottom: 1px dotted #565959; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+/* Incentive callout */
+.incentive { display: block; margin-top: 26px; max-width: 52ch; background: rgba(255,153,0,.12); border: 1.5px solid var(--amz-orange); border-radius: 6px; padding: 14px 20px; color: #fff; font-size: 16.5px; line-height: 1.45; }
+.incentive strong { color: var(--amz-orange); }
+.incentive:hover { background: rgba(255,153,0,.2); }
+.cta-incentive { margin-top: 14px; color: #fff; font-size: 16px; }
+.cta-incentive strong { color: var(--amz-orange); }
+.fine { margin-top: 10px; font-size: 12.5px; color: var(--amz-text-muted); }
