@@ -11,7 +11,7 @@
     solutions_cta_click       industry, method = phone | email
 */
 (function () {
-  var GA_ID = "G-XXXXXXXXXX";
+  var GA_ID = "G-F3B39PV1N7";
   var enabled = /^G-[A-Z0-9]{6,}$/.test(GA_ID) && GA_ID !== "G-XXXXXXXXXX";
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
