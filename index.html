@@ -186,7 +186,7 @@
     }
     .net-row {
       display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-      gap: 14px 12px; max-width: 960px; margin: 0 auto;
+      gap: 14px 12px; max-width: 1180px; margin: 0 auto;
     }
     .net-badge {
       font-weight: 800; font-size: 15px; letter-spacing: 0.3px;
@@ -201,6 +201,7 @@
     .net-badge.para { color:#0064FF; }
     .net-badge.fox  { color:#fff; background:#000; border-color:#333; }
     .net-badge.sam  { color:#fff; background:#1428A0; border-color:#1c34c4; }
+    .net-badge.more { color: var(--amz-orange); background: transparent; border: 1.5px dashed var(--amz-orange); }
 
     /* ---------- Section general ---------- */
     section.content { padding: 82px 24px; }
@@ -420,6 +421,16 @@
     .ind-chips a { font-size: 14px; font-weight: 700; padding: 6px 13px; border: 1.5px solid rgba(19,26,34,0.45); border-radius: 18px; transition: background 0.2s; }
     .ind-chips a:hover { background: rgba(255,255,255,0.35); }
     @media (max-width: 760px) { .ind-banner-inner { grid-template-columns: 1fr; } }
+    /* ---------- Pricing CTAs on light background ---------- */
+    .pricing .hero-ctas { margin-top: 8px; }
+    .pricing .hero-cta { box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+    .pricing .hero-cta-alt { color: var(--amz-navy-deep); border-color: var(--amz-navy); box-shadow: none; }
+    .pricing .hero-cta-alt:hover { background: rgba(35,47,62,0.06); }
+    .pricing .incentive { margin-top: 36px; background: #FFFFFF; color: var(--amz-navy-deep); }
+    .pricing .incentive strong { color: var(--amz-orange-dark); }
+    .pricing .incentive-fine { color: var(--amz-text-muted); }
+    .tvspot-note { margin-top: 26px; font-size: 15px; color: var(--amz-text-muted); }
+    .tvspot-note a { color: var(--amz-orange-dark); font-weight: 700; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -431,7 +442,6 @@
       <nav class="nav-links" id="navLinks">
         <a href="#what">What is CTV</a>
         <a href="#why">Why Us</a>
-        <a href="#production">Video Production</a>
         <a href="#pricing">Pricing</a>
         <a href="#contact">Contact</a>
         <a class="nav-cta" href="#contact">Get Started</a>
@@ -452,14 +462,6 @@
         customers already watch every night. Premium reach, local targeting, and you only pay
         for completed views.
       </p>
-      <div class="hero-ctas">
-        <a class="hero-cta" href="#contact">Get a Free Quote</a>
-        <a class="hero-cta hero-cta-alt" href="tel:8587265524">Call 858-726-5524</a>
-        <a class="hero-cta hero-cta-alt" href="sample-dashboard.html">See a Sample Dashboard</a>
-      </div>
-
-      <a class="incentive" href="#contact"><strong>Ask about our new advertiser incentive programs.</strong> New advertisers typically earn Amazon gift cards* based on investment level.<span class="incentive-fine">*Amazon is not a sponsor of this promotion. Amazon gift cards are subject to Amazon’s gift card terms.</span></a>
-
       <div class="powered">
         <span class="powered-by">Powered by</span>
         <span class="amz-text">Amazon Ads</span>
@@ -479,15 +481,7 @@
       <span class="net-badge para">Paramount+</span>
       <span class="net-badge fox">FOX</span>
       <span class="net-badge sam">Samsung TV</span>
-    </div>
-  </section>
-
-  <!-- ============ INDUSTRY SOLUTIONS BANNER ============ -->
-  <section class="ind-banner">
-    <div class="ind-banner-inner">
-      <h2>Find the solution that’s right for your industry.</h2>
-      <a class="ind-banner-btn" href="/solutions/" data-sol="all">See industry solutions</a>
-      <div class="ind-chips" id="indChips"></div>
+      <span class="net-badge more">+ More Premium Networks</span>
     </div>
   </section>
 
@@ -542,7 +536,7 @@
   <section class="content why" id="why">
     <div class="content-inner">
       <div class="eyebrow">Why USA Connected TV</div>
-      <h2>Premium reach. <span class="accent">Local service.</span></h2>
+      <h2>Premium reach. <span class="accent">Laser targeting.</span> Lower cost.</h2>
 
       <div class="why-cols">
         <div class="why-panel amazon">
@@ -558,7 +552,7 @@
           <h3>Why Work With Us</h3>
           <ul class="why-list">
             <li>We handle everything — strategy, targeting, launch and reporting.</li>
-            <li>Local, hands-on service — talk to a real person, and you're on-air fast.</li>
+            <li>Experienced, dedicated, and part of your team — talk to a real person, and you're on-air fast.</li>
             <li>Flexible budgets and no long-term contract. Just your ad, on premium TV.</li>
           </ul>
         </div>
@@ -566,38 +560,12 @@
     </div>
   </section>
 
-  <!-- ============ VIDEO PRODUCTION ============ -->
-  <section class="content production" id="production">
-    <div class="content-inner">
-      <div class="eyebrow">Video Production</div>
-      <h2>Need a :30 TV commercial? <span class="accent">Not a problem.</span></h2>
-
-      <div class="prod-wrap">
-        <div class="prod-body">
-          <p>
-            No commercial yet — or ready for a better one? We have production people on staff who create
-            professional, national-quality ad videos for a fraction of the cost of traditional production.
-            We combine <strong>Amazon's AI creative studio</strong> with your own local assets — your logo,
-            your photos, your locations, your message — so the finished spot looks and feels like <em>your</em> brand.
-          </p>
-          <p>
-            Our production services typically run about <strong>half the cost of typical video production</strong>,
-            and the commercial is 100% yours — you own all rights and can run it anywhere you want. Just ask,
-            and we'll point you in the right direction.
-          </p>
-          <a class="prod-cta" href="#contact">Ask Us About Video Production</a>
-          <p class="prod-note">No obligation — we'll walk you through options and pricing.</p>
-        </div>
-        <div class="prod-card">
-          <h4>What You Get</h4>
-          <ul>
-            <li>Professional, multi-scene :30 spot with a broadcast-quality look</li>
-            <li>Amazon's AI creative studio + your local assets — your brand on screen</li>
-            <li>Typically about half the cost of traditional video production</li>
-            <li>You own all rights — run it on streaming TV or anywhere else</li>
-          </ul>
-        </div>
-      </div>
+  <!-- ============ INDUSTRY SOLUTIONS BANNER ============ -->
+  <section class="ind-banner">
+    <div class="ind-banner-inner">
+      <h2>Find the solution that’s right for your industry.</h2>
+      <a class="ind-banner-btn" href="/solutions/" data-sol="all">See industry solutions</a>
+      <div class="ind-chips" id="indChips"></div>
     </div>
   </section>
 
@@ -632,7 +600,14 @@
         Non-skippable :30 ads · <strong>you only pay for completed views</strong> · no long-term contract.<br>
         Not sure where to start? Tell us your budget and we'll build a plan.
       </p>
-      <a class="pricing-cta" href="#contact">Get a Free Quote</a>
+      <div class="hero-ctas">
+        <a class="hero-cta" href="#contact">Get a Free Quote</a>
+        <a class="hero-cta hero-cta-alt" href="tel:8587265524">Call 858-726-5524</a>
+        <a class="hero-cta hero-cta-alt" href="#contact">Video Production Available</a>
+      </div>
+
+      <a class="incentive" href="#contact"><strong>Ask about our new advertiser incentive programs.</strong> New advertisers typically earn Amazon gift cards* based on investment level.<span class="incentive-fine">*Amazon is not a sponsor of this promotion. Amazon gift cards are subject to Amazon’s gift card terms.</span></a>
+
     </div>
   </section>
 
