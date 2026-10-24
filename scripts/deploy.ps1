@@ -30,6 +30,9 @@ function Find-Exe($name, $fallback) {
 }
 $git = Find-Exe 'git' 'C:\Program Files\Git\cmd\git.exe'
 $gh = Find-Exe 'gh' 'C:\Program Files\GitHub CLI\gh.exe'
+# gh shells out to git, so make sure git is on PATH even in shells opened before it was installed.
+$env:Path = (Split-Path $git -Parent) + ';' + $env:Path
+$Repo = 'corycuddeback/usaconnectedtv-site'
 
 function Git {
     & $git @args
@@ -92,14 +95,14 @@ Step 'Waiting for GitHub Pages deployment'
 $runId = $null
 for ($i = 0; $i -lt 30 -and -not $runId; $i++) {
     Start-Sleep -Seconds 5
-    $runs = & $gh run list --workflow $Workflow --branch main --limit 10 --json databaseId,headSha | ConvertFrom-Json
+    $runs = & $gh run list --repo $Repo --workflow $Workflow --branch main --limit 10 --json databaseId,headSha | ConvertFrom-Json
     $match = $runs | Where-Object { $_.headSha -eq $sha } | Select-Object -First 1
     if ($match) { $runId = $match.databaseId }
 }
 if (-not $runId) { throw 'No Pages deployment started within 2.5 minutes. Check the Actions tab on GitHub.' }
 
-& $gh run watch $runId --exit-status --interval 5
-if ($LASTEXITCODE -ne 0) { throw "Pages deployment failed. See: gh run view $runId --log-failed" }
+& $gh run watch $runId --repo $Repo --exit-status --interval 5
+if ($LASTEXITCODE -ne 0) { throw "Pages deployment failed. See: gh run view $runId --repo $Repo --log-failed" }
 
 Step 'Checking live site'
 try {
