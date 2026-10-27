@@ -87,6 +87,9 @@ td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;font-v
 td .s{display:block;color:var(--muted);font-size:12px}
 td .n{font-weight:700}
 td:nth-child(4),td:nth-child(5){white-space:nowrap}
+.play{display:inline-flex;align-items:center;gap:6px;margin-top:6px;background:var(--navy);color:#fff;border:none;border-radius:99px;padding:5px 12px 5px 10px;font:700 12px "Inter",sans-serif;cursor:pointer}
+.play:hover{background:var(--navy2)}.play[aria-pressed=true]{background:var(--orange)}
+.play:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 .pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}
 .pill.ok{color:var(--ok);background:rgba(19,130,74,.11)}
 .pill.warn{color:var(--warn);background:rgba(178,98,0,.11)}
@@ -129,15 +132,17 @@ td:nth-child(4),td:nth-child(5){white-space:nowrap}
       <div class="hero-t">
         <h2>Qualified leads</h2>
         <p id="k-take">A qualified lead is a call over one minute, a text, or a form filled out and sent, counted once per phone number.</p>
-        <div class="bar"><i id="k-bar"></i></div>
+        <div class="bar" id="k-barbox"><i id="k-bar"></i></div>
       </div>
     </section>
 
     <div class="tiles">
-      <div class="tile"><div class="l">Calls over 1 minute</div><div class="v" id="k-calls">—</div></div>
-      <div class="tile"><div class="l">Texts</div><div class="v" id="k-texts">—</div></div>
-      <div class="tile"><div class="l">Forms sent</div><div class="v" id="k-forms">—</div></div>
-      <div class="tile"><div class="l" id="k-visits-l">Website visits</div><div class="v" id="k-visits">—</div></div>
+      <div class="tile" id="t-calls"><div class="l">Calls over 1 minute</div><div class="v" id="k-calls">—</div></div>
+      <div class="tile" id="t-vm"><div class="l">Voicemails left</div><div class="v" id="k-vm">—</div></div>
+      <div class="tile" id="t-texts"><div class="l">Texts</div><div class="v" id="k-texts">—</div></div>
+      <div class="tile" id="t-forms"><div class="l">Forms sent</div><div class="v" id="k-forms">—</div></div>
+      <div class="tile" id="t-visits"><div class="l" id="k-visits-l">Website visits</div><div class="v" id="k-visits">—</div></div>
+      <div class="tile" id="t-all"><div class="l">All calls received</div><div class="v" id="k-all">—</div></div>
       <div class="tile" id="t-dep"><div class="l">Deposit remaining</div><div class="v" id="k-dep">—</div></div>
     </div>
 
@@ -158,7 +163,7 @@ td:nth-child(4),td:nth-child(5){white-space:nowrap}
     <div class="grid">
       <section class="card">
         <h2>Lead log</h2>
-        <p class="hint">Every call, text and form fill, newest first. Each phone number counts once.</p>
+        <p class="hint">Every lead, newest first, with caller details and recordings where available. Each phone number counts once.</p>
         <div class="tools">
           <input id="q" type="search" placeholder="Search name, phone or city" aria-label="Search the lead log">
           <select id="f" aria-label="Show">
@@ -270,9 +275,10 @@ td:nth-child(4),td:nth-child(5){white-space:nowrap}
       .attr('x', (d) => x(d.day) + x.bandwidth() / 2).attr('y', h - 8).attr('text-anchor', 'middle')
       .attr('fill', '#66748c').attr('font-size', 11).text((d) => fd(new Date(d.day)));
     const g = svg.append('g').selectAll('g').data(byDay).join('g');
-    g.append('rect').attr('x', (d) => x(d.day)).attr('width', x.bandwidth()).attr('y', (d) => y(d.q))
+    const bw = Math.min(x.bandwidth(), 56), bx = (d) => x(d.day) + (x.bandwidth() - bw) / 2;
+    g.append('rect').attr('x', bx).attr('width', bw).attr('y', (d) => y(d.q))
       .attr('height', (d) => y(0) - y(d.q)).attr('rx', 3).attr('fill', '#e8731a');
-    g.append('rect').attr('x', (d) => x(d.day)).attr('width', x.bandwidth()).attr('y', (d) => y(d.q + d.o))
+    g.append('rect').attr('x', bx).attr('width', bw).attr('y', (d) => y(d.q + d.o))
       .attr('height', (d) => Math.max(0, y(d.q) - y(d.q + d.o) - (d.o ? 2 : 0))).attr('rx', 3).attr('fill', '#d9dee8');
     const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; el.append(tip);
     g.append('rect').attr('x', (d) => x(d.day) - x.step() * x.paddingInner() / 2).attr('width', x.step())
@@ -290,6 +296,30 @@ td:nth-child(4),td:nth-child(5){white-space:nowrap}
   }
   window.addEventListener('resize', () => { if (!app.hidden) chart(); });
 
+  let player = null, playingBtn = null;
+  function leadCell(r, span) {
+    const c = document.createElement('td');
+    c.append(span('n', r.name || 'Name not listed'), span('s', r.phone + ' · ' + r.city + ', ' + r.state));
+    if (r.address) c.append(span('s', r.address));
+    if (r.audio) {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'play'; b.setAttribute('aria-pressed', 'false');
+      b.textContent = '\u25B6 Play recording';
+      b.addEventListener('click', () => {
+        if (playingBtn === b && player && !player.paused) { player.pause(); return; }
+        if (player) player.pause();
+        const bin = atob(r.audio), u = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+        player = new Audio(URL.createObjectURL(new Blob([u], { type: r.audioType || 'audio/mpeg' })));
+        const reset = () => { b.textContent = '\u25B6 Play recording'; b.setAttribute('aria-pressed', 'false'); };
+        if (playingBtn && playingBtn !== b) { playingBtn.textContent = '\u25B6 Play recording'; playingBtn.setAttribute('aria-pressed', 'false'); }
+        playingBtn = b; b.textContent = '\u275A\u275A Pause'; b.setAttribute('aria-pressed', 'true');
+        player.addEventListener('ended', reset); player.addEventListener('pause', reset);
+        player.play().catch(reset);
+      });
+      c.append(b);
+    }
+    return c;
+  }
   let log = [];
   function drawLog() {
     const body = document.getElementById('log'); body.replaceChildren();
@@ -303,9 +333,9 @@ td:nth-child(4),td:nth-child(5){white-space:nowrap}
         const p = span('pill ' + (r.status === 'Qualified' ? 'ok' : r.status === 'Repeat caller' ? 'warn' : 'no'), r.status);
         tr.append(
           td(fdt(t), span('s', fh(t))),
-          td(span('n', r.name || 'Name not listed'), span('s', r.phone + ' · ' + r.city + ', ' + r.state)),
+          leadCell(r, span),
           td(r.source),
-          td(r.type === 'Call' ? 'Call ' + d3.format('.1f')(Number(r.minutes)) + ' min' : r.type),
+          td(r.type === 'Call' || r.type === 'Voicemail' ? r.type + ' ' + d3.format('.1f')(Number(r.minutes)) + ' min' : r.type),
           td(p));
         body.append(tr);
       });
@@ -325,10 +355,15 @@ td:nth-child(4),td:nth-child(5){white-space:nowrap}
     const n = (t) => q.filter((r) => r.type === t).length;
     const goal = c.goal || 0;
     set('k-q', fmt(q.length)); set('k-goal', goal ? ' / ' + fmt(goal) : '');
-    set('k-calls', fmt(n('Call'))); set('k-texts', fmt(n('Text'))); set('k-forms', fmt(n('Form fill')));
+    if (!goal) set('k-take', c.leadDefinition || 'A qualified lead is a call over one minute, a voicemail, a text, or a form filled out and sent, counted once per phone number.');
+    set('k-calls', fmt(n('Call'))); set('k-texts', fmt(n('Text'))); set('k-forms', fmt(n('Form fill'))); set('k-vm', fmt(n('Voicemail')));
+    set('k-all', fmt(d.leads.filter((r) => r.type === 'Call' || r.type === 'Voicemail').length));
+    const tiles = c.tiles || ['calls', 'texts', 'forms', 'visits'];
+    ['calls', 'vm', 'texts', 'forms', 'visits', 'all'].forEach((t) => { document.getElementById('t-' + t).hidden = !tiles.includes(t); });
     set('k-visits', fmt(d3.sum(d.visits || [], (r) => r.visits)));
     const dep = document.getElementById('t-dep');
     if (c.deposit) { dep.hidden = false; set('k-dep', money(Math.max(0, c.deposit - (c.costPerLead || 0) * q.length))); } else dep.hidden = true;
+    document.getElementById('k-barbox').hidden = !goal;
     if (goal) {
       set('k-take', `${fmt(q.length)} of the ${fmt(goal)} guaranteed leads so far, ${fmt(Math.max(0, goal - q.length))} to go. A qualified lead is a call over one minute, a text, or a form filled out and sent, counted once per phone number.`);
       requestAnimationFrame(() => { document.getElementById('k-bar').style.width = Math.min(100, 100 * q.length / goal) + '%'; });
