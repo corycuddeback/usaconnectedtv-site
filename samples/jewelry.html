@@ -1,0 +1,437 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>Sample Proposal – Jewelry</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: navy cover band, then a left label rail + content column per section, matching the Oct 22 proposal */
+:root{
+  --navy:#16213a; --navy-2:#22304f; --orange:#ee7a1f; --ink:#141a26; --muted:#5d6577;
+  --line:#e2e5ec; --paper:#ffffff; --wash:#f3f5f9; --onnavy:#ffffff; --onnavy-dim:#c8cfdd;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+h2{font-size:clamp(22px,3vw,28px);font-weight:800;text-transform:uppercase;letter-spacing:.01em}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+
+/* Cover */
+.cover{background:var(--navy);color:var(--onnavy)}
+.cover .wrap{padding-block:36px 44px;display:grid;gap:22px}
+.brandrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-weight:700;letter-spacing:.06em;font-size:14px}
+.brandrow .box{border:1.5px solid var(--orange);padding:4px 10px}
+.brandrow .x{color:var(--onnavy-dim)}
+.brandrow .tv{color:var(--orange)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap}
+.amzmark{display:grid;justify-items:end;gap:3px}
+.amzmark img{display:block;height:24px;width:auto}
+.amzmark span{font-family:var(--display);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#ffe14d}
+
+.cover .sub{color:var(--onnavy-dim)} .cover .sub b{color:var(--orange);font-weight:500}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--navy-2);border-radius:999px;padding:4px 12px;color:var(--onnavy-dim);width:max-content;max-width:100%}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--orange)}
+.cover h1{font-size:clamp(34px,6vw,58px);font-weight:800;text-transform:uppercase;max-width:14ch}
+.cover h1 em{font-style:normal;color:var(--orange)}
+.cover .lede{max-width:62ch;color:var(--onnavy);font-size:16px}
+
+/* Sections */
+section.s{border-top:1px solid var(--line)}
+section.s .wrap{padding-block:44px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px}
+.rail{color:var(--orange);padding-top:8px}
+.col{display:grid;gap:18px;min-width:0}
+.col > p{max-width:66ch}
+@media (max-width:720px){section.s .wrap{grid-template-columns:1fr;gap:10px}.rail{padding-top:0}}
+
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line)}
+.stats div{padding:16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats div:nth-child(3n){border-right:0}
+.stats div:nth-last-child(-n+3){border-bottom:0}
+.stats b{display:block;font-family:var(--display);font-size:20px;font-weight:700;line-height:1.2;margin-bottom:6px}
+.stats span{font-size:13px;color:var(--muted)}
+@media (max-width:560px){.stats{grid-template-columns:1fr}.stats div{border-right:0!important;border-bottom:1px solid var(--line)!important}.stats div:last-child{border-bottom:0!important}}
+
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;background:var(--wash);padding:10px 14px}
+td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;width:28%}
+
+.note{background:var(--wash);padding:14px 16px;font-size:14px}
+.note b{color:var(--orange)}
+
+.aud{border:1px solid var(--line);padding:16px;display:grid;gap:8px}
+.aud h3{font-size:15px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+.aud h3 span{font-family:var(--mono);font-size:11px;font-weight:400;color:var(--orange)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:12px;border:1px solid var(--line);background:var(--wash);padding:2px 8px}
+
+/* Investment */
+.invest{background:var(--wash)}
+.invest section.s{border-top:0}
+.ask{font-family:var(--display);font-size:clamp(18px,2.4vw,22px);font-weight:700;color:var(--ink)}
+.ask em{font-style:normal;color:var(--orange)}
+.tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.tiers.t3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:640px){.tiers.t3{grid-template-columns:1fr}}
+@media (max-width:820px){.tiers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:460px){.tiers{grid-template-columns:1fr}}
+.tier{background:var(--paper);border:1px solid var(--line);padding:18px 16px;display:grid;gap:14px;align-content:start}
+.tier.best{border:2px solid var(--orange)}
+.tier .amt{font-family:var(--display);font-size:clamp(22px,2.4vw,27px);white-space:nowrap;font-weight:800;line-height:1}
+.tier .cpm{color:var(--orange)}
+.tier .big{font-family:var(--display);font-size:22px;font-weight:800;line-height:1.1}
+.tier .small{font-size:12.5px;color:var(--muted)}
+.tier dl{margin:0;display:grid;gap:10px;border-top:1px solid var(--line);padding-top:12px}
+.tier dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tier dd{margin:2px 0 0;font-size:14px;font-weight:600}
+.yes{color:var(--ink)} .yes::before{content:"✓ ";color:var(--orange)}
+.no{color:var(--muted);font-weight:500!important}
+.flag{font-family:var(--mono);font-size:11px;line-height:1.6;letter-spacing:.08em;text-transform:uppercase;background:var(--orange);color:#fff;padding:0 6px;width:max-content}
+.invest .note{background:var(--paper)}
+
+.steps{display:grid;gap:12px;padding:0;margin:0;list-style:none;counter-reset:n}
+.steps li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;align-items:start}
+.steps li::before{counter-increment:n;content:counter(n);width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center}
+.contact{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.contact div{border:1px solid var(--line);padding:12px 14px}
+.contact b{display:block;font-size:15px;user-select:all}
+@media (max-width:460px){.contact{grid-template-columns:1fr}}
+
+footer .wrap{padding-block:24px 40px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line)}
+
+/* Measurement flow */
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;counter-reset:f}
+.fstep{position:relative;display:grid;gap:6px;align-content:start;padding:14px 18px 14px 14px;background:var(--paper);border:1px solid var(--line);border-left:0}
+.fstep:first-child{border-left:1px solid var(--line)}
+.fstep::after{content:"";position:absolute;right:-9px;top:50%;width:16px;height:16px;background:var(--paper);border-top:1px solid var(--line);border-right:1px solid var(--line);transform:translateY(-50%) rotate(45deg);z-index:1}
+.fstep:last-child::after{display:none}
+.fstep .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange)}
+.fstep b{font-family:var(--display);font-size:15px;font-weight:800;text-transform:uppercase;line-height:1.15}
+.fstep span{font-size:12.5px;color:var(--muted);line-height:1.45}
+.fstep.amc{background:var(--navy);border-color:var(--navy)}
+.fstep.amc::after{background:var(--navy);border-color:var(--navy)}
+.fstep.amc b{color:var(--onnavy)} .fstep.amc span{color:var(--onnavy-dim)}
+.fstep.ft{border:2px solid var(--orange)}
+.fstep.ft::after{border-color:var(--orange);border-width:2px;border-left:0;border-bottom:0}
+@media (max-width:760px){.flow{grid-template-columns:1fr}.fstep{border-left:1px solid var(--line);border-top:0}.fstep:first-child{border-top:1px solid var(--line)}.fstep::after{right:auto;left:24px;top:auto;bottom:-9px;transform:rotate(135deg)}}
+/* Foot traffic cards + data flow */
+.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.card{border:1px solid var(--line);border-radius:6px;padding:14px;display:grid;gap:6px;align-content:start;background:var(--paper)}
+.card .n{font-family:var(--display);font-size:30px;font-weight:800;color:var(--orange);line-height:1}
+.card b{font-family:var(--display);font-size:14px;font-weight:800;text-transform:uppercase;line-height:1.2}
+.card span{font-size:12.5px;color:var(--muted);line-height:1.45}
+.card.dark{background:var(--navy);border-color:var(--navy)} .card.dark b{color:var(--onnavy)} .card.dark span{color:var(--onnavy-dim)}
+@media (max-width:820px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:460px){.cards{grid-template-columns:1fr}}
+.sub3{font-size:16px;font-weight:800;text-transform:uppercase}
+.chip{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange);border-radius:999px;padding:0 8px;margin-right:6px}
+.dataflow{display:grid;grid-template-columns:minmax(0,2.2fr) 28px minmax(0,1fr) 28px minmax(0,1fr);align-items:center;gap:8px}
+.sources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.src,.room,.dash{border:1px solid var(--line);border-radius:6px;padding:11px 12px;display:grid;gap:3px;align-content:start;background:var(--paper)}
+.dataflow i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange)}
+.dataflow b{font-family:var(--display);font-size:13.5px;font-weight:800;text-transform:uppercase;line-height:1.2}
+.dataflow span{font-size:12px;color:var(--muted);line-height:1.4}
+.room{background:var(--navy);border-color:var(--navy);padding:18px 14px} .room b{color:var(--onnavy);font-size:17px} .room span{color:var(--onnavy-dim)}
+.dash{border:2px solid var(--orange);padding:18px 14px} .dash b{font-size:17px}
+.arrow{height:2px;background:var(--orange);position:relative}
+.arrow::after{content:"";position:absolute;right:-1px;top:-5px;border-left:9px solid var(--orange);border-top:6px solid transparent;border-bottom:6px solid transparent}
+@media (max-width:760px){.dataflow{grid-template-columns:1fr}.arrow{width:2px;height:24px;margin-inline:auto}.arrow::after{right:-5px;top:auto;bottom:-2px;border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid var(--orange);border-bottom:0}}
+/* Data flow diagram */
+.dfwrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--paper);padding:16px}
+.dfsvg{display:block;width:100%;min-width:680px;height:auto}
+.dfsvg .h{font-family:var(--mono);font-size:11px;letter-spacing:.12em;fill:var(--orange)}
+.dfsvg .t{font-family:var(--body);font-size:13.5px;font-weight:600;fill:var(--ink)}
+.dfsvg .u{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
+.dfsvg .bs rect{fill:var(--wash);stroke:var(--line)}
+.dfsvg .bc rect{fill:var(--paper);stroke:var(--line)}
+.dfsvg .bamc rect{fill:#fde9da;stroke:var(--orange);stroke-width:1.5}
+.dfsvg .bo rect{fill:var(--navy);stroke:var(--navy)} .dfsvg .bo .t{fill:var(--onnavy)} .dfsvg .bo .u{fill:var(--onnavy-dim)}
+.dfsvg .tag rect{fill:var(--wash);stroke:var(--line)} .dfsvg .tag text{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
+.dfsvg path.ag{fill:none;stroke:#7a8296;stroke-width:1.3} .dfsvg path.ao{fill:none;stroke:var(--orange);stroke-width:2}
+.dfsvg .mkg{fill:#7a8296} .dfsvg .mko{fill:var(--orange)}
+.dfnotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;font-size:14px;color:var(--muted)}
+.dfnotes b{color:var(--ink)}
+@media (max-width:720px){.dfnotes{grid-template-columns:1fr}}
+.contact .ops{grid-column:1/-1}
+.redact{color:var(--ink);letter-spacing:-1px;opacity:.85}
+.auth{border:1.5px solid var(--ink);padding:18px 20px;display:grid;gap:14px;margin-top:6px;break-inside:avoid}
+.auth h3{font-family:var(--display);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.auth p{font-size:13.5px;color:var(--muted);max-width:none}
+.pick{display:flex;flex-wrap:wrap;gap:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.pick span{display:inline-flex;align-items:center;gap:8px}
+.pick i{width:14px;height:14px;border:1.5px solid var(--ink);display:inline-block}
+.lines{display:grid;grid-template-columns:2fr 1.4fr 1fr;gap:24px;padding-top:26px}
+.ln .rule{border-bottom:1px solid var(--ink);height:1px;margin-bottom:6px}
+.ln .label{color:var(--muted)}
+@media (max-width:560px){.lines{grid-template-columns:1fr;gap:34px}}
+@media print{
+  body{font-size:11px;line-height:1.45}
+  .cover .wrap{padding-block:26px 30px;gap:14px}
+  .cover h1{font-size:40px}
+  .cover .lede{font-size:13px}
+  section.s .wrap{padding-block:11px;grid-template-columns:100px minmax(0,1fr);gap:18px}
+  .col{gap:11px}
+  h2{font-size:19px;break-after:avoid}
+  .ask{font-size:15px}
+  td{padding:6px 10px} th{padding:6px 10px}
+  .stats div{padding:10px 12px} .stats b{font-size:15px;margin-bottom:2px} .stats span{font-size:11px}
+  .aud{padding:10px 12px;gap:5px} .aud h3{font-size:12.5px} .chips span{font-size:10.5px}
+  .note{padding:9px 12px;font-size:11.5px}
+  .tiers{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px} .tiers.t3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tier{padding:12px 10px;gap:9px} .tier .amt{font-size:19px} .tier .big{font-size:16px} .tier dd{font-size:12px} .tier dl{gap:6px;padding-top:8px}
+  .steps{gap:6px} .contact div{padding:8px 12px}
+  footer .wrap{padding-block:4px 0;font-size:7.5px;line-height:1.3}
+  .invest section.s .wrap,.tier,.aud,tr,.stats,.steps li,.contact{break-inside:avoid}
+  .rail{break-after:avoid}
+  .fstep{padding:8px 12px 8px 9px;gap:3px} .fstep b{font-size:11px} .fstep span{font-size:9.5px;line-height:1.35} .fstep .k{font-size:9px}
+  .flow,.cards,.dataflow{break-inside:avoid}
+  .cards{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .dataflow{grid-template-columns:minmax(0,3fr) 22px minmax(0,1fr) 22px minmax(0,1fr)}
+  .sources{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .arrow{width:auto;height:2px;margin:0}
+  section.datasec{break-before:page}
+  section.closing{break-before:page}
+  .dfwrap{padding:8px} .dfsvg{min-width:0} .dfnotes{font-size:10px;gap:10px;line-height:1.35} .rep{display:none} .stats b{font-size:13px} .stats span{font-size:10px}
+  .stats div{padding:7px 10px}
+  .contact{grid-template-columns:1fr 1fr 1.5fr 1.2fr;gap:6px} .auth{padding:10px 14px;gap:8px} .auth p{font-size:10.5px} .lines{padding-top:22px} .contact div{padding:3px 8px} .contact b{font-size:11px}
+  .steps{gap:4px} .steps li::before{width:18px;height:18px;font-size:10px}
+  .card{padding:9px} .card .n{font-size:20px} .card b{font-size:11px} .card span{font-size:9.5px}
+  .src{padding:6px 8px} .dataflow b{font-size:10.5px} .dataflow span{font-size:9px} .room b,.dash b{font-size:13px} .room,.dash{padding:10px}
+}
+</style>
+
+</head><body style="margin:0"><header class="cover">
+  <div class="wrap">
+    <div class="topbar">
+  <div class="brandrow"><span class="box">SAMPLE PROPOSAL · JEWELRY</span><span class="x">×</span><span>USA CONNECTED <span class="tv">TV</span></span><span class="x">+</span><span>DYNAMICARD</span></div>
+      <div class="amzmark"><img src="data:image/png;base64,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" alt="Amazon Ads"><span>Premium inventory</span></div>
+    </div>
+    <div class="label sub">Holiday Streaming TV Proposal · <b>USA Connected TV + DynamiCard</b></div>
+    <div class="label pill">Multi-store regional jeweler · sample</div>
+    <h1>Put your stores on the big screen, <em>in front of shoppers ready to buy.</em></h1>
+    <p class="lede">A holiday streaming TV plan built store by store: authenticated Amazon shoppers around each of your locations who are buying jewelry, getting engaged or shopping for luxury gifts; your commercial on the biggest screen in their house; and reporting that ties the TV to website visits, appointments and sales. Foot traffic attribution is included at every investment level.</p>
+  </div>
+</header>
+
+<section class="s"><div class="wrap">
+  <div class="label rail">The client</div>
+  <div class="col">
+    <h2>A story that belongs on TV</h2>
+    <p>This sample is based on a real proposal for a family-owned, multi-generation jeweler with stores across several western states. Details that would identify the client have been removed. A long history, in-house financing and private in-store events are exactly the kind of story that plays well on the biggest screen in the house.</p>
+    <div class="stats">
+      <div><b>Decades</b><span>family-owned, multi-generation history</span></div>
+      <div><b>Multi-state</b><span>mall and street locations across several states</span></div>
+      <div><b>Every store</b><span>its own trade area and its own report</span></div>
+      <div><b>12 months</b><span>deferred-interest financing, in-house</span></div>
+      <div><b>Private events</b><span>spring and fall in-store events by RSVP</span></div>
+      <div><b>Designer brands</b><span>bridal, fashion jewelry and fine watches</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="label rail">Streaming TV</div>
+  <div class="col">
+    <h2>What connected TV is, and why it fits a jeweler</h2>
+    <p>Connected TV (CTV) is television delivered over the internet: Prime Video, Fire TV and the other streaming apps people watch on their living room TV. Your commercial runs full-screen inside those shows, the same as broadcast TV, with three big differences.</p>
+    <div class="tbl"><table>
+      <tr><th>What's different</th><th>What it means for the jeweler</th></tr>
+      <tr><td>Chosen households</td><td>Your spot goes only to the households we pick: people near your stores who are shopping for jewelry, getting engaged, or buying luxury gifts.</td></tr>
+      <tr><td>Store-level geography</td><td>Each store gets its own trade area, down to the ZIP code. A small-town store and a big-city mall store each get a plan that fits that market.</td></tr>
+      <tr><td>Paid by the impression</td><td>You pay only for ads delivered to the households you target. Nothing goes to people outside your markets.</td></tr>
+      <tr><td>Measured past the click</td><td>Website visits, appointment requests, financing applications and offline sales tied back to the households that saw the ad, plus foot traffic attribution.</td></tr>
+    </table></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="label rail">Your stores</div>
+  <div class="col">
+    <h2>Every market, one plan</h2>
+    <p>Every store gets its own target area around the mall it sits in. Store locations are hidden in this sample. Budget and frequency can be weighted toward the stores with the most room to grow, and every report breaks out results store by store.</p>
+    <div class="tbl"><table>
+      <tr><th>State</th><th>Stores</th></tr>
+      <tr><td>State A</td><td><span class="redact">██████████</span>, <span class="redact">██████████</span>, <span class="redact">██████████</span>, <span class="redact">██████████</span></td></tr>
+      <tr><td>State B</td><td><span class="redact">██████████</span>, <span class="redact">██████████</span></td></tr>
+      <tr><td>State C</td><td><span class="redact">██████████</span>, <span class="redact">██████████</span></td></tr>
+      <tr><td>State D</td><td><span class="redact">██████████</span>, <span class="redact">██████████</span></td></tr>
+      <tr><td>State E</td><td><span class="redact">██████████</span></td></tr>
+    </table></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="label rail">The audience</div>
+  <div class="col">
+    <h2>Who we'd reach</h2>
+    <p>These audiences come from Amazon Ads, built from what Amazon's own signed-in customers shop for and watch. Advertisers never see anyone's personal information; Amazon matches the ad to the audience on its side. Every audience is limited to the trade areas around your stores.</p>
+    <p class="note"><b>How to read the audiences.</b> In-market (IM): customers whose recent shopping and browsing show they're actively shopping a category right now. Lifestyle (LS): customers whose ongoing shopping and viewing habits show a lasting interest or life stage, like getting married or buying luxury brands. Both come from Amazon's own customers, not outside data.</p>
+    <div class="aud"><h3>Shopping for jewelry right now <span>Highest intent</span></h3><p>People actively browsing rings, necklaces, earrings and bracelets, for themselves or as a gift.</p><div class="chips"><span>Jewelry</span><span>Women's Rings</span><span>Women's Necklaces</span><span>Women's Earrings</span><span>Men's Jewelry</span></div></div>
+    <div class="aud"><h3>Luxury shoppers and big gift-givers <span>Holiday lead</span></h3><p>People who buy premium brands and expensive gifts. The strongest audience for the holidays.</p><div class="chips"><span>Predicted Luxury Brands Gifter</span><span>Luxury Stores Customers</span><span>Predicted Luxury Fashion Enthusiast</span><span>Luxury Car Owners</span></div></div>
+    <div class="aud"><h3>Couples getting engaged and married <span>Bridal</span></h3><p>Engagement-ring shoppers and couples with an active wedding registry. December is the biggest proposal month of the year.</p><div class="chips"><span>Engagement Rings</span><span>Active Wedding Registry</span><span>Wedding Products</span><span>Weddings Books</span></div></div>
+    <div class="aud"><h3>Fine watch buyers <span>Timepieces</span></h3><p>High-end watch enthusiasts, plus first-time watch buyers, often shopping for a gift.</p><div class="chips"><span>Predicted Luxury Watch Enthusiast</span><span>Men's Wrist Watches</span><span>Women's Wrist Watches</span><span>Watches – New to Category</span></div></div>
+  </div>
+</div></section>
+
+<div class="invest">
+<section class="s"><div class="wrap">
+  <div class="label rail">Holiday investment</div>
+  <div class="col">
+    <h2>What's your budget? Here's what it buys.</h2>
+    <p class="ask">Pick the level that fits your holiday plan. <em>The more you invest, the lower your CPM</em>, so every dollar puts more commercials in front of your shoppers.</p>
+    <p>CPM is the cost per thousand commercials delivered. Each commercial is one full-screen spot played on a TV in a household we targeted, near one of your stores.</p>
+    <div class="tiers t3">
+      <div class="tier">
+        <div class="label">Investment</div>
+        <div class="amt num">$50,000</div>
+        <div class="label cpm">$28 CPM</div>
+        <div><div class="big num">1,785,714</div><div class="small">commercials delivered</div></div>
+        <dl>
+          <div><dt>Foot traffic attribution</dt><dd class="yes">Included</dd></div>
+          <div><dt>Setup fee</dt><dd class="num">$3,000</dd></div>
+        </dl>
+      </div>
+      <div class="tier">
+        <div class="label">Investment</div>
+        <div class="amt num">$100,000</div>
+        <div class="label cpm">$26 CPM</div>
+        <div><div class="big num">3,846,154</div><div class="small">commercials delivered</div></div>
+        <dl>
+          <div><dt>Foot traffic attribution</dt><dd class="yes">Included</dd></div>
+          <div><dt>Setup fee</dt><dd class="num">$1,500</dd></div>
+        </dl>
+      </div>
+      <div class="tier best">
+        <div class="flag">Best value</div>
+        <div class="amt num">$150,000+</div>
+        <div class="label cpm">$24 CPM</div>
+        <div><div class="big num">6,250,000+</div><div class="small">commercials delivered at $150,000</div></div>
+        <dl>
+          <div><dt>Foot traffic attribution</dt><dd class="yes">Included</dd></div>
+          <div><dt>Setup fee</dt><dd class="yes">Waived</dd></div>
+        </dl>
+      </div>
+    </div>
+    <p class="note"><b>Foot traffic attribution</b> is included at every level. The setup fee is $3,000 at $50,000, $1,500 at $100,000, and waived at $150,000 and up. Every level also includes store-level targeting, all of the Amazon audiences above, and full dashboard reporting. Above $150,000, every additional dollar runs at the $24 CPM.</p>
+  </div>
+</div></section>
+</div>
+
+<section class="s"><div class="wrap">
+  <div class="label rail">The calendar</div>
+  <div class="col">
+    <h2>On air when jewelry sells</h2>
+    <p>The holiday flight runs through Christmas, with the heaviest weight in the final weeks when gift shoppers make their decision. The same plan can carry into engagement season and Valentine's Day.</p>
+    <div class="tbl"><table>
+      <tr><th>Moment</th><th>How we'd use it</th></tr>
+      <tr><td>Holiday</td><td>Heaviest weight of the year on luxury gifters and jewelry shoppers, building to Christmas Eve</td></tr>
+      <tr><td>Engagement season</td><td>December through February, when most proposals happen: engagement-ring shoppers and new registries</td></tr>
+      <tr><td>Valentine's Day</td><td>Gift shoppers and luxury gifters, two to three weeks out</td></tr>
+      <tr><td>Spring &amp; fall private events</td><td>Two weeks of TV in each market before the event to drive RSVPs, with event-day store visits measured</td></tr>
+    </table></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="label rail">Foot traffic</div>
+  <div class="col">
+    <h2>From the living-room TV to the phone that walks in</h2>
+    <p>For a jeweler, the sale happens at the counter. Foot traffic attribution, included at every level, follows the commercial from the TV to the shopper who walks into one of your stores, and to what they spent.</p>
+    <div class="cards">
+      <div class="card"><div class="n">1</div><b>Pick the stores</b><span>Choose every location or the ones that matter most. We draw a boundary around each store.</span></div>
+      <div class="card"><div class="n">2</div><b>They see the commercial</b><span>Your spot plays on a connected TV in a household we targeted.</span></div>
+      <div class="card"><div class="n">3</div><b>The household links to its devices</b><span>The TV and the phones in that home share a household connection.</span></div>
+      <div class="card"><div class="n">4</div><b>They walk in</b><span>A phone with location sharing enters one of your stores' boundaries and counts as a visit.</span></div>
+      <div class="card dark"><div class="n">5</div><b>We measure the revenue</b><span>Visits are matched to your sales, so you see the dollars that came from TV households, store by store.</span></div>
+    </div>
+    <h3 class="sub3">Hooking up the revenue</h3>
+    <ol class="steps">
+      <li><span><b>Store boundaries.</b> You confirm the stores, and our measurement partner maps each one and checks data coverage before launch.</span></li>
+      <li><span><b>Website tag.</b> Your web team adds one Amazon Ads tag to your website to count visits, appointment requests and financing applications.</span></li>
+      <li><span><b>Sales file.</b> You share a secure weekly file of in-store sales: date, store, amount, and the customer's email or phone. Contact details are scrambled (hashed) before they're uploaded, so no one can read them.</span></li>
+      <li><span><b>The match.</b> Inside Amazon Marketing Cloud, sales are matched to the households that saw the commercial and walked in.</span></li>
+      <li><span><b>Revenue in your dashboard.</b> You see TV-driven visits and revenue by store, audience and commercial.</span></li>
+    </ol>
+    <p class="note"><span class="chip">Privacy</span> No personal information is shared with the jeweler, USA Connected TV or DynamiCard. Results are anonymous, aggregated and statistical.</p>
+  </div>
+</div></section>
+
+<section class="s datasec"><div class="wrap">
+  <div class="label rail">The data</div>
+  <div class="col">
+    <h2>Six sources, one privacy-safe room, one dashboard</h2>
+    <div class="dfwrap"><svg class="dfsvg" viewBox="-4 0 1018 486" role="img" aria-label="Data flow: six sources feed Amazon Marketing Cloud and an aggregates-only data store, which output the dashboard and weekly optimization">
+<defs><marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" class="mkg"/></marker><marker id="mo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" class="mko"/></marker></defs>
+<text class="h" x="0" y="18">SOURCES</text><text class="h" x="290" y="18">CONNECT</text><text class="h" x="570" y="18">STORE + MODEL</text><text class="h" x="820" y="18">OUTPUT</text><g class="bs"><rect x="0" y="40" width="230" height="58" rx="5"/><text class="t" x="13" y="66.0">Amazon Ads console</text><text class="u" x="13" y="83.0">Impressions, CPM, spend</text></g><g class="bs"><rect x="0" y="116" width="230" height="58" rx="5"/><text class="t" x="13" y="142.0">Website tag</text><text class="u" x="13" y="159.0">Appointments, financing apps</text></g><g class="bs"><rect x="0" y="192" width="230" height="58" rx="5"/><text class="t" x="13" y="218.0">Store visit partner</text><text class="u" x="13" y="235.0">adsquare / Foursquare / Cuebiq</text></g><g class="bs"><rect x="0" y="268" width="230" height="58" rx="5"/><text class="t" x="13" y="294.0">Store POS</text><text class="u" x="13" y="311.0">Sales, hashed email or phone</text></g><g class="bs"><rect x="0" y="344" width="230" height="58" rx="5"/><text class="t" x="13" y="370.0">Store sales totals</text><text class="u" x="13" y="387.0">Weekly, every store</text></g><g class="bs"><rect x="0" y="420" width="230" height="58" rx="5"/><text class="t" x="13" y="446.0">Store map</text><text class="u" x="13" y="463.0">One boundary per store</text></g><g class="bc"><rect x="290" y="40" width="200" height="58" rx="5"/><text class="t" x="303" y="66.0">Amazon Ads API</text><text class="u" x="303" y="83.0">Daily reports by store</text></g><g class="bamc"><rect x="290" y="150" width="200" height="94" rx="5"/><text class="t" x="303" y="194.0">Amazon Marketing Cloud</text><text class="u" x="303" y="211.0">Privacy-safe join</text></g><g class="bc"><rect x="290" y="268" width="200" height="58" rx="5"/><text class="t" x="303" y="294.0">Conversions API</text><text class="u" x="303" y="311.0">Weekly offline upload</text></g><g class="bc"><rect x="570" y="192" width="190" height="58" rx="5"/><text class="t" x="583" y="218.0">Exclusiva data store</text><text class="u" x="583" y="235.0">Aggregates only</text></g><g class="bc"><rect x="570" y="344" width="190" height="58" rx="5"/><text class="t" x="583" y="370.0">Visit + sales model</text><text class="u" x="583" y="387.0">Visits matched to sales</text></g><g class="bo"><rect x="820" y="192" width="190" height="58" rx="5"/><text class="t" x="833" y="218.0">This dashboard</text><text class="u" x="833" y="235.0">Store, audience, spot</text></g><g class="bo"><rect x="820" y="344" width="190" height="58" rx="5"/><text class="t" x="833" y="370.0">Weekly optimization</text><text class="u" x="833" y="387.0">Budget to top stores</text></g><g class="tag"><rect x="566" y="160" width="152" height="20" rx="3"/><text x="575" y="174">only group totals leave</text></g><path class="ag" d="M230 69 H286" marker-end="url(#mg)"/><path class="ag" d="M390 98 V146" marker-end="url(#mg)"/><path class="ag" d="M230 145 H260 V176 H286" marker-end="url(#mg)"/><path class="ao" d="M230 221 H286" marker-end="url(#mo)"/><path class="ag" d="M230 297 H286" marker-end="url(#mg)"/><path class="ag" d="M390 268 V248" marker-end="url(#mg)"/><path class="ao" d="M490 197 H530 V221 H566" marker-end="url(#mo)"/><path class="ao" d="M760 221 H816" marker-end="url(#mo)"/><path class="ag" d="M665 250 V340" marker-end="url(#mg)"/><path class="ag" d="M230 373 H566" marker-end="url(#mg)"/><path class="ag" d="M230 449 H545 V387 H566" marker-end="url(#mg)"/><path class="ag" d="M760 373 H816" marker-end="url(#mg)"/><path class="ag" d="M760 360 H790 V235 H816" marker-end="url(#mg)"/></svg></div>
+    <div class="dfnotes">
+      <p><b>Amazon Marketing Cloud</b> is Amazon's clean room. Ad exposure, store visits and your matched sales are joined inside it.</p>
+      <p>Only anonymous group totals come out. Nobody, including us, sees an individual shopper.</p>
+      <p>Ad reports refresh daily; visit and sales reads refresh weekly.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="label rail">Reporting</div>
+  <div class="col">
+    <h2>Everything we report</h2>
+    <div class="stats">
+      <div><b>Impressions</b><span>ads delivered, by store market and audience</span></div>
+      <div><b>Completed views</b><span>how many watched your spot to the end</span></div>
+      <div><b>Reach &amp; frequency</b><span>households reached and how often they saw it</span></div>
+      <div><b>Website actions</b><span>site visits, appointment requests and financing applications, through an Amazon Ads tag on your website</span></div>
+      <div><b>Offline conversions</b><span>in-store sales you share with us, matched privately to ad exposure through Amazon Ads</span></div>
+      <div><b>Foot traffic</b><span>store visits and revenue from those visits, store by store</span></div>
+    </div>
+    <p class="rep">Reports come in a live dashboard you can check any time, with a monthly review together.</p>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="label rail">Creative</div>
+  <div class="col">
+    <h2>Your story, made for TV</h2>
+    <p>We can run your existing commercials or produce new :30 and :15 holiday spots built around your history, your designer brands, financing and your private events. One idea to consider: a short audio logo built on your signature slogan, sung at the close of every spot so it sticks.</p>
+  </div>
+</div></section>
+
+<section class="s closing"><div class="wrap">
+  <div class="label rail">Next steps</div>
+  <div class="col">
+    <h2>Getting on air for Christmas</h2>
+    <ol class="steps">
+      <li><span>Pick the investment level that fits your holiday budget.</span></li>
+      <li><span>A short call to learn which stores matter most this season.</span></li>
+      <li><span>We map the trade area around each store and weight the budget by market.</span></li>
+      <li><span>We review creative: your existing spots or a new holiday spot.</span></li>
+      <li><span>You're on air. Holiday inventory fills quickly, so the sooner we lock in, the more of the season you get.</span></li>
+    </ol>
+    <div class="contact">
+      <div><div class="label">Contact</div><b>Cory Cuddeback</b></div>
+      <div><div class="label">Phone</div><b>858-726-5524</b></div>
+      <div><div class="label">Email</div><b>cory@usaconnectedtv.com</b></div>
+      <div><div class="label">Web</div><b><a href="https://usaconnectedtv.com" style="color:inherit">usaconnectedtv.com</a></b></div>
+      <div class="ops"><div class="label">Technical and setup assistance</div><b>MJ, Operations Manager · mj@usaconnectedtv.com · 858-726-5524</b></div>
+    </div>
+    <div class="auth">
+      <h3>Authorization</h3>
+      <p>By signing below, the advertiser authorizes USA Connected TV to run the holiday streaming TV campaign described in this proposal at the investment level checked.</p>
+      <div class="pick"><span><i></i>$50,000</span><span><i></i>$100,000</span><span><i></i>$150,000+ &nbsp;$______________</span></div>
+      <div class="lines">
+        <div class="ln wide"><div class="rule"></div><div class="label">Authorized signature</div></div>
+        <div class="ln"><div class="rule"></div><div class="label">Printed name</div></div>
+        <div class="ln"><div class="rule"></div><div class="label">Date</div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">Presented by USA Connected TV + DynamiCard · USA Connected TV is Amazon Ads Certified. Audience names are examples from Amazon Ads; final audiences are tailored to each market. Commercials delivered = investment ÷ CPM × 1,000. Minimum investment is $50,000. Foot traffic attribution is subject to partner data coverage; results are anonymous, aggregated and statistical. All ads are subject to Amazon's ad policies and review.</div></footer>
+</body></html>
