@@ -200,5 +200,69 @@ window.USA_INDUSTRIES = [
         audiences: ["Child Safety Car Seat Accessories", "Car Seat Automotive Seat Protector", "Car Seat Strap & Belt Covers"]
       }
     ]
+  },
+  {
+    slug: "casual-dining",
+    name: "Casual Dining",
+    pitch: "We fill your tables with locals who love a great meal out, matched to your menu, on the streaming shows they watch on their big-screen TV.",
+    groups: [
+      {
+        title: "Food lovers",
+        why: "People who love trying new food and flavors, the natural crowd for a sit-down restaurant.",
+        audiences: ["Foodies", "Recipes & Cooking", "Fish & Seafood", "Pasta & Noodles"]
+      },
+      {
+        title: "Cuisine fans",
+        why: "Households already into a specific kind of food, matched to your menu.",
+        audiences: ["Italian", "Mexican", "Middle Eastern", "Pizza"]
+      },
+      {
+        title: "Health-conscious diners",
+        why: "Guests looking for lighter options, a fit for restaurants with healthy menus.",
+        audiences: ["Low Carb", "Sugar Free", "Diet & Nutrition"]
+      },
+      {
+        title: "Gift givers",
+        why: "People who buy restaurant gift cards, bringing new guests through your door.",
+        audiences: ["Restaurant Gift Card Buyers"]
+      },
+      {
+        title: "Drinks and nightlife",
+        why: "Adults who enjoy wine, beer and drinks, a match for bar and grill restaurants.",
+        audiences: ["Wine", "Beer", "Coffee"]
+      }
+    ]
+  },
+  {
+    slug: "specialty-retail",
+    name: "Specialty Retail",
+    pitch: "We reach the shoppers in your area who are already buying what you sell, on the streaming shows they watch at home, and give them a reason to come into your store.",
+    groups: [
+      {
+        title: "Fashion",
+        why: "Shoppers actively browsing and buying clothing right now, ready for a reason to come into the store.",
+        audiences: ["Men’s Clothing", "Women’s Clothing", "Shoes"]
+      },
+      {
+        title: "Sporting goods",
+        why: "Households already shopping for gear, a natural match for sporting goods and outdoor stores.",
+        audiences: ["Golf", "Fishing"]
+      },
+      {
+        title: "Beauty and personal care",
+        why: "Shoppers in the market for beauty products, ideal for salons, boutiques and beauty retailers.",
+        audiences: ["Makeup", "Skincare"]
+      },
+      {
+        title: "Home and garden",
+        why: "People upgrading their homes right now, ready for home decor, kitchen and bedding stores.",
+        audiences: ["Kitchen", "Bedding"]
+      },
+      {
+        title: "Entertainment",
+        why: "Families and gamers shopping for fun, a fit for toy, game and hobby shops.",
+        audiences: ["Toys", "Games"]
+      }
+    ]
   }
 ];
