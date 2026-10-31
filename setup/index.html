@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amazon Ads Setup | USA Connected TV</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Where submissions go. FormSubmit sends one activation email to this
+     address the first time; click "Activate" in it and every form after
+     that is delivered. */
+  :root {
+    --ink: #1b2532;
+    --navy: #232f3e;
+    --orange: #ff9900; --orange-ink: #b86e00; --err: #c4303a;
+    --steel: #5a6a7e;
+    --rule: #d5dce5;
+    --field: #ffffff;
+    --page: #edf0f4;
+    --sheet: #ffffff;
+    --focus: #1f5fbf;
+    --ok: #1d7a4a;
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #e6ebf2; --steel: #9aa8ba; --rule: #34445c; --field: #16233a;
+      --page: #0d1727; --sheet: #121e33; --focus: #6aa2ff; --ok: #4cc287;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #e6ebf2; --steel: #9aa8ba; --rule: #34445c; --field: #16233a;
+    --page: #0d1727; --sheet: #121e33; --focus: #6aa2ff; --ok: #4cc287;
+    color-scheme: dark;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font: 400 16px/1.5 "Inter", "Helvetica Neue", Arial, sans-serif;
+  }
+  .sheet {
+    max-width: 760px; margin: 32px auto; background: var(--sheet);
+    border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+  }
+
+  /* Brand header: logo sits on its own navy, orange signal stripe underneath */
+  .bar {
+    background: var(--navy); display: flex; align-items: center; justify-content: space-between;
+    gap: 12px 24px; flex-wrap: wrap; padding: 6px 20px 6px 6px;
+    border-bottom: 5px solid var(--orange);
+  }
+  .logo { display: block; height: 104px; width: auto; max-width: 100%; }
+  .bar .title {
+    color: #fff; font: 700 15px/1.3 "Inter", "Helvetica Neue", Arial, sans-serif;
+    text-align: right; letter-spacing: .01em;
+  }
+  .bar .title small { display: block; font-weight: 500; color: #aab6c5; font-size: 13px; }
+  .intro { padding: 24px 28px 4px; max-width: 64ch; }
+  .intro h1 {
+    letter-spacing: -.01em; font: 800 30px/1.15 "Inter", "Helvetica Neue", Arial, sans-serif; margin: 0 0 10px;
+  }
+  .intro p { margin: 0 0 8px; color: var(--steel); }
+
+  form { padding: 8px 28px 28px; }
+  fieldset { border: 0; margin: 0; padding: 24px 0 26px; border-top: 1px solid var(--rule); }
+  fieldset:first-of-type { border-top: 0; }
+  legend {
+    font: 700 18px/1.3 "Inter", "Helvetica Neue", Arial, sans-serif;
+    padding: 0; margin-bottom: 12px; float: left; width: 100%;
+  }
+  legend + * { clear: both; }
+  legend::before { content: ""; display: inline-block; width: 4px; height: .95em; background: var(--orange); border-radius: 2px; margin-right: 10px; vertical-align: -2px; }
+  .why { color: var(--steel); font-size: 14px; margin: -6px 0 16px; max-width: 62ch; }
+
+  .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px 16px; }
+  .c6 { grid-column: span 6; } .c4 { grid-column: span 4; } .c3 { grid-column: span 3; }
+  .c2 { grid-column: span 2; } .c1 { grid-column: span 1; }
+
+  label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 5px; }
+  .opt { font-weight: 400; color: var(--steel); }
+  input, select, textarea {
+    width: 100%; font: inherit; color: var(--ink); background: var(--field);
+    border: 1px solid var(--rule); border-radius: 4px; padding: 10px 12px; min-height: 44px;
+  }
+  textarea { min-height: 84px; resize: vertical; }
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--focus); outline-offset: 1px; border-color: var(--focus);
+  }
+  .prefix { position: relative; }
+  .prefix span { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--steel); }
+  .prefix input { padding-left: 26px; }
+  .suffix { position: relative; }
+  .suffix span { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--steel); }
+  .suffix input { padding-right: 30px; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 15px; margin-top: 2px; }
+  .check input { width: 20px; min-height: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--orange-ink); }
+
+  .send { display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center; padding-top: 24px; border-top: 1px solid var(--rule); margin-top: 0; }
+  button {
+    font: 700 17px/1 "Inter", "Helvetica Neue", Arial, sans-serif; letter-spacing: .02em;
+    background: var(--orange); color: #1b2532; border: 0; border-radius: 6px;
+    padding: 14px 30px; min-height: 48px; cursor: pointer;
+  }
+  button:hover { filter: brightness(1.08); }
+  button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  button[disabled] { opacity: .6; cursor: wait; }
+  .status { font-size: 15px; color: var(--steel); }
+  .status.ok { color: var(--ok); font-weight: 600; }
+  .status.err { color: var(--err); font-weight: 600; }
+  .status a { color: inherit; }
+
+  .done { display: none; padding: 36px 28px 40px; }
+  .done h2 { font: 800 28px/1.15 "Inter", "Helvetica Neue", Arial, sans-serif; margin: 0 0 8px; }
+  .done p { color: var(--steel); margin: 0; max-width: 60ch; }
+  .sent .done { display: block; } .sent form, .sent .intro { display: none; }
+
+  footer {
+    background: var(--navy); color: #c9d3e0; border-top: 5px solid var(--orange); padding: 14px 28px; font-size: 14px;
+    display: flex; flex-wrap: wrap; gap: 6px 22px;
+  }
+  footer a { color: #ffb84d; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  .hp { position: absolute; left: -9999px; }
+
+  @media (max-width: 640px) {
+    .sheet { margin: 0; border-radius: 0; border-left: 0; border-right: 0; }
+    .bar { padding: 4px 16px 12px 4px; }
+    .logo { height: 72px; }
+    .bar .title { text-align: left; padding-left: 12px; }
+    .intro, form, .done { padding-left: 18px; padding-right: 18px; }
+    footer { padding: 14px 18px; }
+    .c4, .c3, .c2 { grid-column: span 6; }
+    .c1 { grid-column: span 3; }
+  }
+  @media print {
+    body { background: #fff; }
+    .sheet { margin: 0; border: 0; }
+    .send { display: none; }
+  }
+</style>
+</head>
+<body>
+<main class="sheet" id="sheet">
+  <header class="bar">
+    <svg class="logo" role="img" aria-label="USA Connected TV. Laser targeting. Lower pricing." xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 140">
+<rect rx="14" fill="#232F3E"/>
+<g transform="translate(22,24)"><rect x="4" y="4" width="100" height="70" rx="13" fill="#3A4453"/>
+    <polygon points="29.00,17.00 32.17,25.63 41.36,25.98 34.14,31.67 36.64,40.52 29.00,35.40 21.36,40.52 23.86,31.67 16.64,25.98 25.83,25.63" fill="#FFFFFF"/>
+    <rect x="50" y="20" width="70" height="9" rx="4.5" fill="#FF9900"/>
+    <rect x="50" y="35" width="58" height="9" rx="4.5" fill="#FF9900"/>
+    <rect x="50" y="50" width="44" height="9" rx="4.5" fill="#FF9900"/>
+    <path d="M40 74 L36 86 L72 86 L68 74 Z" fill="#3A4453"/>
+    <rect x="28" y="84" width="52" height="5" rx="2.5" fill="#3A4453"/></g><text x="160" y="72" font-family="Inter, Arial, sans-serif" font-weight="800" font-size="44" letter-spacing="-0.5" fill="#FFFFFF">USA <tspan fill="#FF9900">Connected TV</tspan></text><text x="160.5" y="108" font-family="Inter, Arial, sans-serif" font-weight="500" font-size="20" fill="#FFFFFF">Laser targeting. Lower pricing.</text></svg>
+    <div class="title">Amazon Ads setup<small>New client information</small></div>
+  </header>
+
+  <div class="intro">
+    <h1>Let’s get your campaign set up</h1>
+    <p>We build and run your Streaming TV campaign on Amazon Ads. These details let us set up your account and track the calls and leads your ad brings in. It takes about five minutes.</p>
+  </div>
+
+  <form id="setup" novalidate>
+    <fieldset>
+      <legend>Your business</legend>
+      <p class="why">Enter these exactly as they appear on your business registration. Amazon checks them before your ads can run.</p>
+      <div class="grid">
+        <div class="c6"><label for="legal_name">Legal business name</label>
+          <input id="legal_name" name="Legal business name" required autocomplete="organization"></div>
+        <div class="c6"><label for="dba">Name customers know you by <span class="opt">(if different)</span></label>
+          <input id="dba" name="DBA / brand name"></div>
+        <div class="c6"><label for="street">Street address</label>
+          <input id="street" name="Street address" required autocomplete="street-address"></div>
+        <div class="c3"><label for="city">City</label>
+          <input id="city" name="City" required autocomplete="address-level2"></div>
+        <div class="c1"><label for="state">State</label>
+          <input id="state" name="State" required maxlength="2" autocomplete="address-level1"></div>
+        <div class="c2"><label for="zip">ZIP</label>
+          <input id="zip" name="ZIP" required inputmode="numeric" maxlength="10" autocomplete="postal-code"></div>
+        <div class="c6"><label for="website">Website</label>
+          <input id="website" name="Website" type="url" required placeholder="https://"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Your contact information</legend>
+      <div class="grid">
+        <div class="c3"><label for="contact">Your name</label>
+          <input id="contact" name="Contact name" required autocomplete="name"></div>
+        <div class="c3"><label for="role">Title</label>
+          <input id="role" name="Title" autocomplete="organization-title"></div>
+        <div class="c3"><label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email"></div>
+        <div class="c3"><label for="phone">Phone</label>
+          <input id="phone" name="Contact phone" type="tel" required autocomplete="tel"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Where the ad sends people</legend>
+      <p class="why">Viewers who want to learn more will go to this page or call this number. A tracking number used only for TV lets us count the calls the ad brings in.</p>
+      <div class="grid">
+        <div class="c6"><label for="landing">Landing page for the TV ad <span class="opt">(if applicable)</span></label>
+          <input id="landing" name="Landing page" type="url" placeholder="https://"></div>
+        <div class="c3"><label for="tracking">Tracking phone number for the ad <span class="opt">(if applicable)</span></label>
+          <input id="tracking" name="Tracking phone number" type="tel"></div>
+        <div class="c3" style="align-self:end"><label class="check" for="need_number">
+          <input id="need_number" name="Needs a tracking number" type="checkbox" value="Yes">
+          We don’t have one. Please set one up for us.</label></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>What a new customer is worth</legend>
+      <p class="why">Rough numbers are fine. We use them to show what your campaign earns back, not just how many people saw it.</p>
+      <div class="grid">
+        <div class="c3"><label for="value">Average value of a new customer</label>
+          <div class="prefix"><span>$</span><input id="value" name="Average customer value ($)" inputmode="decimal" required></div></div>
+        <div class="c3"><label for="close">Share of leads that become customers</label>
+          <div class="suffix"><input id="close" name="Lead-to-customer rate (%)" inputmode="decimal" required placeholder="e.g. 25"><span>%</span></div></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Who manages your website</legend>
+      <p class="why">We’ll send this person a small piece of code to add to your site so we can see which TV viewers visit and take action. Google Tag Manager makes it a two-minute job.</p>
+      <div class="grid">
+        <div class="c6"><label for="web_name">Person or company</label>
+          <input id="web_name" name="Website manager" required></div>
+        <div class="c3"><label for="web_email">Their email</label>
+          <input id="web_email" name="Website manager email" type="email" required></div>
+        <div class="c3"><label for="web_phone">Their phone <span class="opt">(optional)</span></label>
+          <input id="web_phone" name="Website manager phone" type="tel"></div>
+        <div class="c6"><label for="gtm">Does your website use Google Tag Manager?</label>
+          <select id="gtm" name="Uses Google Tag Manager" required>
+            <option value="">Choose one</option>
+            <option>Yes</option><option>No</option><option>Not sure</option>
+          </select></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Anything else</legend>
+      <div class="grid">
+        <div class="c6"><label for="notes">Notes <span class="opt">(optional)</span></label>
+          <textarea id="notes" name="Notes"></textarea></div>
+      </div>
+    </fieldset>
+
+    <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <div class="send">
+      <button type="submit" id="sendBtn">Send to USA Connected TV</button>
+      <span class="status" id="status" role="status" aria-live="polite"></span>
+    </div>
+  </form>
+
+  <div class="done" id="done" tabindex="-1">
+    <h2>Sent. Thank you.</h2>
+    <p>Your details are on their way to Cory Cuddeback at USA Connected TV. We’ll be in touch shortly to confirm everything and schedule your launch.</p>
+  </div>
+
+  <footer>
+    <span>USA Connected TV</span>
+    <a href="tel:+18587265524">858-726-5524</a>
+    <a href="mailto:cory@usaconnectedtv.com">cory@usaconnectedtv.com</a>
+    <a href="https://www.usaconnectedtv.com">usaconnectedtv.com</a>
+  </footer>
+</main>
+
+<script>
+(function () {
+  var TO = "cory@usaconnectedtv.com";
+  var ENDPOINT = "https://formsubmit.co/ajax/" + TO;
+  var form = document.getElementById("setup");
+  var btn = document.getElementById("sendBtn");
+  var status = document.getElementById("status");
+
+  function setStatus(msg, cls) { status.className = "status" + (cls ? " " + cls : ""); status.innerHTML = msg; }
+
+  function collect() {
+    var data = {};
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.name === "_honey") return;
+      if (el.type === "checkbox") { if (el.checked) data[el.name] = el.value; return; }
+      if (el.value.trim()) data[el.name] = el.value.trim();
+    });
+    return data;
+  }
+
+  function mailtoLink(data) {
+    var body = Object.keys(data).map(function (k) { return k + ": " + data[k]; }).join("\n");
+    var subj = "Amazon Ads setup: " + (data["Legal business name"] || "new client");
+    return "mailto:" + TO + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(body);
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (form._honey && form._honey.value) return;
+    if (!form.checkValidity()) {
+      var bad = form.querySelector(":invalid");
+      setStatus("Please fill in the highlighted field before sending.", "err");
+      if (bad) { bad.focus(); bad.reportValidity && bad.reportValidity(); }
+      return;
+    }
+    var data = collect();
+    var payload = Object.assign({
+      _subject: "Amazon Ads setup: " + (data["Legal business name"] || "new client"),
+      _template: "table",
+      _captcha: "false"
+    }, data);
+
+    btn.disabled = true; setStatus("Sending…");
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    })
+    .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+    .then(function (res) {
+      if (res.ok && String(res.j.success) === "true") {
+        document.getElementById("sheet").classList.add("sent");
+        document.getElementById("done").focus();
+        window.scrollTo(0, 0);
+      } else { throw new Error("not sent"); }
+    })
+    .catch(function () {
+      btn.disabled = false;
+      setStatus('It didn’t go through. <a href="' + mailtoLink(data) + '">Send it by email instead</a> (your answers are filled in), or call 858-726-5524.', "err");
+    });
+  });
+})();
+</script>
+</body>
+</html>
