@@ -130,6 +130,10 @@
   footer a:hover { text-decoration: underline; }
 
   .hp { position: absolute; left: -9999px; }
+  .tried input:invalid, .tried select:invalid, .tried textarea:invalid {
+    border-color: var(--err); outline: 2px solid var(--err); outline-offset: 1px;
+    background: color-mix(in srgb, var(--err) 6%, var(--field));
+  }
 
   @media (max-width: 640px) {
     .sheet { margin: 0; border-radius: 0; border-left: 0; border-right: 0; }
@@ -186,7 +190,7 @@
         <div class="c2"><label for="zip">ZIP</label>
           <input id="zip" name="ZIP" required inputmode="numeric" maxlength="10" autocomplete="postal-code"></div>
         <div class="c6"><label for="website">Website</label>
-          <input id="website" name="Website" type="url" required placeholder="https://"></div>
+          <input id="website" name="Website" type="text" inputmode="url" autocapitalize="off" spellcheck="false" required placeholder="yourbusiness.com"></div>
       </div>
     </fieldset>
 
@@ -209,7 +213,7 @@
       <p class="why">Viewers who want to learn more will go to this page or call this number. A tracking number used only for TV lets us count the calls the ad brings in.</p>
       <div class="grid">
         <div class="c6"><label for="landing">Landing page for the TV ad <span class="opt">(if applicable)</span></label>
-          <input id="landing" name="Landing page" type="url" placeholder="https://"></div>
+          <input id="landing" name="Landing page" type="text" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="yourbusiness.com/tv"></div>
         <div class="c3"><label for="tracking">Tracking phone number for the ad <span class="opt">(if applicable)</span></label>
           <input id="tracking" name="Tracking phone number" type="tel"></div>
         <div class="c3" style="align-self:end"><label class="check" for="need_number">
@@ -305,10 +309,17 @@
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     if (form._honey && form._honey.value) return;
+    form.classList.add("tried");
     if (!form.checkValidity()) {
-      var bad = form.querySelector(":invalid");
-      setStatus("Please fill in the highlighted field before sending.", "err");
-      if (bad) { bad.focus(); bad.reportValidity && bad.reportValidity(); }
+      var bad = form.querySelector("input:invalid, select:invalid, textarea:invalid");
+      var lab = bad && form.querySelector('label[for="' + bad.id + '"]');
+      var name = lab ? lab.childNodes[0].textContent.trim() : "a field";
+      var why = !bad ? "" :
+        bad.validity.valueMissing ? "it can’t be left blank." :
+        bad.type === "email" ? "it needs a full email address, like name@company.com." :
+        "please check what’s entered.";
+      setStatus("Please fix “" + name + "”: " + why + " It’s outlined in red.", "err");
+      if (bad) { bad.scrollIntoView({ block: "center" }); bad.focus({ preventScroll: true }); }
       return;
     }
     var data = collect();
