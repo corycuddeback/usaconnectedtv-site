@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>You got my mail | USA Connected TV</title>
+<meta name="robots" content="noindex">
+<script src="/analytics.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;800&display=swap">
+<style>
+:root{
+  --bg:#F5F6F8; --surface:#FFFFFF; --ink:#0B1F3A; --ink-soft:#3A4A63; --band:#1D2938;
+  --accent:#F78D15; --accent-ink:#FFFFFF; --gold:#FFC72C; --gold-ink:#0B1F3A; --line:#D9DEE6; --bar:rgba(255,255,255,.94);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#0E141D; --surface:#161E2A; --ink:#F1F3F7; --ink-soft:#B4BDCB; --band:#1D2938;
+    --accent:#F78D15; --accent-ink:#FFFFFF; --gold:#FFC72C; --gold-ink:#0B1F3A; --line:#2A3546; --bar:rgba(14,20,29,.94);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#0E141D; --surface:#161E2A; --ink:#F1F3F7; --ink-soft:#B4BDCB; --band:#1D2938;
+  --accent:#F78D15; --accent-ink:#FFFFFF; --gold:#FFC72C; --gold-ink:#0B1F3A; --line:#2A3546; --bar:rgba(14,20,29,.94);
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Archivo,"Helvetica Neue",Arial,sans-serif;line-height:1.5}
+.band{background:var(--band);border-bottom:5px solid var(--accent);padding:14px 16px;display:flex;justify-content:center}
+.band img{width:min(360px,88%);height:auto;display:block}
+main{max-width:760px;margin:0 auto;padding:26px 0 calc(110px + env(safe-area-inset-bottom,0px))}
+.pad{padding:0 18px}
+.eyebrow{font-weight:800;letter-spacing:.14em;font-size:.8rem;color:var(--accent);margin:0 0 8px}
+h1{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(2.7rem,12vw,4.4rem);line-height:1;letter-spacing:.01em;margin:0 0 10px}
+.lede{font-size:1.08rem;color:var(--ink-soft);margin:0 0 20px}
+.player{position:relative;background:#000;aspect-ratio:16/9;overflow:hidden}
+@media (min-width:620px){.player{border-radius:16px;margin:0 18px}}
+.player video{position:absolute;inset:0;width:100%;height:100%;display:block;background:#000}
+.tap{position:absolute;inset:0;border:0;padding:0 0 4% 0;margin:0;cursor:pointer;background:#000 center/cover no-repeat;display:flex;flex-direction:row;align-items:flex-end;justify-content:center;gap:12px;color:#fff;font:inherit}
+.tap::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(5,10,18,.55),rgba(5,10,18,0) 45%)}
+.tap .circle{position:relative;width:58px;height:58px;flex-shrink:0;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(0,0,0,.4)}
+.tap .circle::after{content:"";margin-left:5px;border-style:solid;border-width:11px 0 11px 19px;border-color:transparent transparent transparent #fff}
+.tap .label{position:relative;font-weight:800;font-size:1rem;letter-spacing:.04em;background:rgba(0,0,0,.55);padding:7px 14px;border-radius:999px}
+.tap .label{white-space:nowrap}
+@media (max-width:440px){.tap{gap:9px}.tap .circle{width:44px;height:44px}.tap .circle::after{border-width:9px 0 9px 15px;margin-left:4px}.tap .label{font-size:.82rem;padding:6px 12px}}
+.tap:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+.tap[hidden]{display:none}
+.facts{display:grid;grid-template-columns:1fr;gap:10px;margin:22px 0 24px}
+@media (min-width:620px){.facts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.fact{background:var(--gold);color:var(--gold-ink);border-radius:14px;padding:14px 16px;display:flex;align-items:baseline;gap:12px}
+@media (min-width:620px){.fact{display:block}}
+.fact b{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:1.8rem;line-height:1.05;white-space:nowrap}
+@media (min-width:620px){.fact b{display:block;margin-bottom:4px}}
+.fact span{font-weight:600;font-size:.95rem;line-height:1.3}
+.cta{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 18px;text-align:center}
+.cta h2{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:1.8rem;line-height:1.1;margin:0 0 6px}
+.cta p{margin:0;color:var(--ink-soft)}
+footer{text-align:center;color:var(--ink-soft);font-size:.88rem;padding:22px 18px 0}
+footer strong{color:var(--ink)}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bar);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;justify-content:center}
+.btn{display:flex;align-items:center;justify-content:center;min-height:54px;text-decoration:none;font-weight:800;font-size:1.05rem;padding:0 20px;border-radius:999px;text-align:center}
+.btn.primary{background:var(--accent);color:var(--accent-ink);flex:1 1 auto;max-width:380px}
+.btn.secondary{border:2px solid var(--ink);color:var(--ink);flex:0 0 auto}
+.btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+</style>
+</head>
+<body>
+<header class="band"><img src="/mail-logo.png" alt="USA Connected TV: Laser targeting. Lower pricing."></header>
+<main>
+  <div class="pad">
+    <p class="eyebrow">YOU’VE GOT MAIL</p>
+    <h1>You got my mail.</h1>
+    <p class="lede">Here’s the one-minute version of how your stores show up on streaming TV.</p>
+  </div>
+
+  <div class="player">
+    <video id="vid" src="/mail-video.mp4" poster="/mail-poster.jpg" playsinline preload="metadata"></video>
+    <button class="tap" id="tap" type="button" aria-label="Play the video with sound" style="background-image:url('/mail-poster.jpg')">
+      <span class="circle"></span>
+      <span class="label">Tap to play with sound</span>
+    </button>
+  </div>
+
+  <div class="pad">
+    <div class="facts">
+      <div class="fact"><b>$18</b><span>CPMs from</span></div>
+      <div class="fact"><b>100%</b><span>Unskippable, full-screen video</span></div>
+      <div class="fact"><b>Included</b><span>Foot traffic, measured store revenue, management fees</span></div>
+    </div>
+
+    <section class="cta">
+      <h2>Give me 15 minutes.</h2>
+      <p>I’ll show you exactly who we’d reach around your stores and what it costs.</p>
+      <p style="margin-top:16px"><a href="https://calendly.com/usaconnectedtv" style="color:var(--accent);font-weight:800">Book a time on my calendar →</a></p>
+    </section>
+
+    <footer><strong>USA Connected TV</strong> · Powered by Amazon Ads<br>Cory Cuddeback · cory@usaconnectedtv.com</footer>
+  </div>
+</main>
+
+<nav class="bar" aria-label="Contact Cory">
+  <a class="btn primary" href="tel:+18587265524">Call Cory: 858-726-5524</a>
+  <a class="btn secondary" href="mailto:cory@usaconnectedtv.com?subject=I%20got%20your%20mail">Email</a>
+</nav>
+
+<script>
+(function(){
+  var v=document.getElementById('vid'), t=document.getElementById('tap');
+  t.addEventListener('click',function(){
+    v.muted=false; v.controls=true; t.hidden=true;
+    var p=v.play(); if(p&&p.catch){p.catch(function(){t.hidden=false;});}
+  });
+  v.addEventListener('ended',function(){ v.controls=false; t.hidden=false; t.querySelector('.label').textContent='Watch again'; });
+})();
+</script>
+</body>
+</html>
